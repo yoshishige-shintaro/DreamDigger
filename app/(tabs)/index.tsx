@@ -1,31 +1,40 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from "react-native";
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+import { View } from "@/components/common/Themed";
+import Colors from "@/constants/Colors";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-export default function TabOneScreen() {
+export default function DiggingScreen() {
+  const Tab = createMaterialTopTabNavigator();
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <Tab.Navigator
+        screenOptions={{
+          tabBarStyle: { backgroundColor: Colors.light.background },
+          tabBarActiveTintColor: Colors.light.text,
+          tabBarIndicatorStyle: { backgroundColor: Colors.light.tabBarIndicator },
+        }}
+      >
+        <Tab.Screen name="30秒" component={DummyScreen} />
+        <Tab.Screen name="7日" component={DummyScreen} />
+        <Tab.Screen name="30日" component={DummyScreen} />
+      </Tab.Navigator>
+    </View>
+  );
+}
+
+function DummyScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>きかん</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+    backgroundColor: "#fff",
+    width: "100%",
+    height: "100%",
   },
 });
