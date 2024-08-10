@@ -15,18 +15,22 @@ export default function DiggingScreen() {
           tabBarIndicatorStyle: { backgroundColor: Colors.light.tabBarIndicator },
         }}
       >
-        <Tab.Screen name="30秒" component={DummyScreen} />
-        <Tab.Screen name="7日" component={DummyScreen} />
-        <Tab.Screen name="30日" component={DummyScreen} />
+        <Tab.Screen name="全て" component={DummyScreen} />
+        <Tab.Screen name="プライベート" component={DummyScreen} />
+        <Tab.Screen name="仕事" component={DummyScreen} />
       </Tab.Navigator>
     </View>
   );
 }
 
 function DummyScreen() {
+  const now = new Date();
+  const s = now.toISOString();
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>きかん</Text>
+      <Text>{now.toString()}</Text>
+      <Text>{s}</Text>
     </View>
   );
 }
