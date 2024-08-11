@@ -6,7 +6,11 @@ module.exports = {
     "./components/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      flexGrow: {
+        0.8: "0.8",
+      },
+    },
   },
   plugins: [],
 };

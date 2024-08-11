@@ -12,7 +12,6 @@ export const migrateDbIfNeeded = async (db: SQLiteDatabase) => {
   const result = await db.getFirstAsync<{ user_version: number }>("PRAGMA user_version");
   let currentDbVersion = result?.user_version ?? 0;
   if (currentDbVersion >= DATABASE_VERSION) {
-    console.log("データベースがすでに作成されています。");
     return;
   }
   if (currentDbVersion === 0) {
