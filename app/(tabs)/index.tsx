@@ -1,11 +1,15 @@
 import { StyleSheet, Text } from "react-native";
 
+import BucketList from "@/components/bucketList/BucketList";
 import { View } from "@/components/common/Themed";
 import Colors from "@/constants/Colors";
+import { useDiggingScreen } from "@/hooks/bucketList/useDiggingScreen";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 export default function DiggingScreen() {
   const Tab = createMaterialTopTabNavigator();
+
+  const { bucketItems, categories } = useDiggingScreen();
   return (
     <View style={styles.container}>
       <Tab.Navigator
@@ -15,9 +19,11 @@ export default function DiggingScreen() {
           tabBarIndicatorStyle: { backgroundColor: Colors.light.tabBarIndicator },
         }}
       >
-        <Tab.Screen name="全て" component={DummyScreen} />
-        <Tab.Screen name="プライベート" component={DummyScreen} />
-        <Tab.Screen name="仕事" component={DummyScreen} />
+        {categories.map((category) => (
+          <Tab.Screen name={category} key={category}>
+            {() => <BucketList bucketItems={bucketItems} />}
+          </Tab.Screen>
+        ))}
       </Tab.Navigator>
     </View>
   );
