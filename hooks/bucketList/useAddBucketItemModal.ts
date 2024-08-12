@@ -8,6 +8,7 @@ import z from "zod";
 const schema = z.object({
   bucketItemTitle: z.string().trim().min(1, { message: "入力してください" }),
   category: z.string().optional(),
+  deadline: z.date(),
 });
 
 // schema から型を抽出
@@ -22,6 +23,7 @@ export const useAddBucketItemModal: UseAddBucketItemModal = () => {
   const defaultValues: AddBucketItemFormInput = {
     bucketItemTitle: "",
     category: undefined,
+    deadline: new Date(),
   };
 
   // React Hook Form

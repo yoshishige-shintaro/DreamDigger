@@ -1,3 +1,4 @@
+import RhfPickerSelect from "@/components/common/RhfPickerSelect";
 import RhfTextInput from "@/components/common/RhfTextInput";
 import { useAddBucketItemModal } from "@/hooks/bucketList/useAddBucketItemModal";
 import React from "react";
@@ -20,10 +21,18 @@ const AddBucketListItemModal = (props: {
         className="absolute top-0 left-0 w-screen h-full bg-black opacity-20"
       />
       <Animated.View
-        className={`flex-grow-0.7  h-64  bg-white py-8 px-4 rounded-xl`}
+        className={`flex-1 mx-4  bg-white  rounded-xl`}
         style={[{ transform: [{ translateY: slideAnim }] }]}
       >
-        <RhfTextInput control={control} name="bucketItemTitle" label="やりたいこと" />
+        <View className="py-8 px-4">
+          <RhfTextInput control={control} name="bucketItemTitle" label="やりたいこと" />
+          <RhfPickerSelect
+            control={control}
+            name="category"
+            label="カテゴリ"
+            items={categories.slice(1, 3).map((category) => ({ label: category, value: category }))}
+          />
+        </View>
 
         {/* <Button onPress={closeModal} title="閉じる" /> */}
       </Animated.View>
