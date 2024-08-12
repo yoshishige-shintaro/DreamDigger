@@ -1,4 +1,3 @@
-import { ErrorMessage } from "@hookform/error-message";
 import React from "react";
 import { FieldValues, UseControllerProps, useController } from "react-hook-form";
 import { Text, TextInput, TextInputProps, View } from "react-native";
@@ -26,8 +25,8 @@ const RhfTextInput = <T extends FieldValues>(props: InputProps<T>): JSX.Element 
         } ${className}`}
       />
       {error && (
-        <Text className="mt-1 text-rose-400">
-          <ErrorMessage errors={error} name={name} />
+        <Text className="mt-1 text-rose-700">
+          <Text>{error.message}</Text>
         </Text>
       )}
     </View>
