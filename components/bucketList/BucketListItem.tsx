@@ -1,19 +1,32 @@
+import { TINT_COLOR } from "@/constants/Colors";
 import { ElapsedTimeObj, useBucketListItem } from "@/hooks/bucketList/useBucketListItem";
 import { Text, View } from "react-native";
+import CheckBox from "react-native-check-box";
 
 type BucketListItemProps = {
+  id: string;
   title: string;
   deadline: Date;
 };
 
 const BucketListItem = (props: BucketListItemProps): JSX.Element => {
-  const { deadline, title } = props;
-  const { timeToDeadline, isExpiredDeadline } = useBucketListItem({ deadline });
+  const { title } = props;
+  const { timeToDeadline, isExpiredDeadline, isChecked, onClickCheckBox } =
+    useBucketListItem(props);
+
   return (
     <View className="flex-row justify-between items-center bg-white h-16 p-4 rounded-md mb-1">
-      {/* やりたいことタイトル */}
-      <Text className="text-base">{title}</Text>
-
+      <CheckBox
+        isChecked={isChecked}
+        onClick={onClickCheckBox}
+        checkBoxColor="#ccc"
+        checkedCheckBoxColor={TINT_COLOR}
+        rightTextView={
+          <Text className={`text-base ml-1 ${isChecked ? "line-through text-[#ccc]" : ""}`}>
+            {title}
+          </Text>
+        }
+      />
       {/* 期限までの残り時間 */}
       <Text className={`text-base ${isExpiredDeadline ? "text-rose-500" : ""}`}>
         {displayTimeToDeadLine(timeToDeadline)}

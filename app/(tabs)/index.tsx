@@ -1,8 +1,12 @@
+import AddBucketListItemButton from "@/components/bucketList/AddBucketListItemButton";
+import AddBucketListItemModal from "@/components/bucketList/AddBucketListItemModal";
 import BucketList from "@/components/bucketList/BucketList";
 import Colors from "@/constants/Colors";
 import { useDiggingScreen } from "@/hooks/bucketList/useDiggingScreen";
 import { BucketItem, StatusValue } from "@/lib/types/BucketItem";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { useRef, useState } from "react";
+import { Animated, Dimensions } from "react-native";
 
 const DUMMY_BUCKET_ITEMS: BucketItem[] = [
   {
@@ -107,27 +111,66 @@ export default function DiggingScreen() {
   const Tab = createMaterialTopTabNavigator();
 
   const { bucketItems, categories } = useDiggingScreen();
+
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const deviceHeight = Dimensions.get("window").height;
+  const slideAnim = useRef(new Animated.Value(deviceHeight)).current; // 初期位置を設定
+
+  const closeModal = () => {
+    Animated.timing(slideAnim, {
+      toValue: deviceHeight,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => setIsOpenModal(false));
+  };
+  const openModal = () => {
+    setIsOpenModal(true);
+    // モーダルを表示するアニメーション
+    Animated.timing(slideAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarStyle: { backgroundColor: Colors.light.background },
-        tabBarActiveTintColor: Colors.light.text,
-        tabBarIndicatorStyle: { backgroundColor: Colors.light.tabBarIndicator },
-      }}
-    >
-      {categories.map((category, index) => (
-        <Tab.Screen name={category} key={category}>
-          {() => (
-            <BucketList
-              bucketItems={
-                index === 0
-                  ? DUMMY_BUCKET_ITEMS
-                  : DUMMY_BUCKET_ITEMS.filter((item) => item.category === category)
-              }
-            />
-          )}
-        </Tab.Screen>
-      ))}
-    </Tab.Navigator>
+    <>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarStyle: { backgroundColor: Colors.light.background },
+          tabBarActiveTintColor: Colors.light.text,
+          tabBarIndicatorStyle: { backgroundColor: Colors.light.tabBarIndicator },
+        }}
+        // SCREEN の wrapper のスタイル
+        sceneContainerStyle={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
+        {categories.map((category, index) => (
+          <Tab.Screen name={category} key={category}>
+            {() => (
+              <BucketList
+                bucketItems={
+                  index === 0
+                    ? DUMMY_BUCKET_ITEMS
+                    : DUMMY_BUCKET_ITEMS.filter((item) => item.category === category)
+                }
+              />
+            )}
+          </Tab.Screen>
+        ))}
+      </Tab.Navigator>
+      <AddBucketListItemButton openModal={openModal} />
+      {isOpenModal && (
+        <AddBucketListItemModal
+          isOpen={isOpenModal}
+          slideAnim={slideAnim}
+          closeModal={closeModal}
+          categories={categories}
+        />
+      )}
+    </>
   );
 }

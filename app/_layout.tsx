@@ -7,6 +7,7 @@ import { SQLiteProvider } from "expo-sqlite";
 import { useEffect } from "react";
 
 import "react-native-reanimated";
+import { RecoilRoot } from "recoil";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -48,10 +49,12 @@ export default function RootLayout() {
 function RootLayoutNav() {
   return (
     <SQLiteProvider databaseName={DB_NAME} onInit={migrateDbIfNeeded}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-      </Stack>
+      <RecoilRoot>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+        </Stack>
+      </RecoilRoot>
     </SQLiteProvider>
   );
 }

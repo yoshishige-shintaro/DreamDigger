@@ -1,10 +1,9 @@
+import Colors from "@/constants/Colors";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
 import React from "react";
 import { Pressable, useColorScheme } from "react-native";
-
-import Colors from "@/constants/Colors";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -31,7 +30,9 @@ export default function TabLayout() {
         },
         tabBarStyle: {
           backgroundColor: Colors[colorScheme ?? "light"].background,
+          height:80
         },
+        headerStatusBarHeight:55
       }}
     >
       <Tabs.Screen
