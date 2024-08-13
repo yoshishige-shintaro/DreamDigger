@@ -1,4 +1,4 @@
-import { StatusValue } from "@/lib/types/BucketItem";
+import { RawBucketItem, StatusValue } from "@/lib/types/BucketItem";
 import { TableValue } from "@/lib/utils/table";
 import { createUuid } from "@/lib/utils/uuid";
 import { type SQLiteDatabase } from "expo-sqlite";
@@ -76,4 +76,14 @@ export const migrateDbIfNeeded = async (db: SQLiteDatabase) => {
     currentDbVersion = 1;
   }
   await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
+};
+
+export const SQLInsertBucketListItem = (body: RawBucketItem): string => {
+  return `INSERT INTO ${TableValue.BUCKET_ITEMS_TABLE}
+  (uuid, title, created_at_iso_string, deadline_iso_string, achieved_at_iso_string, status, category_id) 
+  VALUES ('${body.uuid}', '${body.title}', '${body.created_at_iso_string}', '${
+    body.deadline_iso_string
+  }', ${body.achieved_at_iso_string ? `'${body.achieved_at_iso_string}'` : null}, '${
+    body.status
+  }', ${body.category_id ? `'${body.category_id}'` : null})`;
 };

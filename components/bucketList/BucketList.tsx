@@ -13,7 +13,7 @@ const BucketList = (props: BucketListProps): JSX.Element => {
     <View className="grow-0.8 mt-12">
       <FlatList
         // 締め切り期限までの残り時間（降順）
-        data={bucketItems.sort((a, b) => +a.deadline - +b.deadline)}
+        data={bucketItems}
         renderItem={({ item: bucketItem }) => {
           return (
             <BucketListItem

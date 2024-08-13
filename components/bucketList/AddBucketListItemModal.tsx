@@ -33,7 +33,7 @@ const AddBucketListItemModal = (props: {
           <RhfTextInput control={control} name="bucketItemTitle" label="やりたいこと" />
           <RhfPickerSelect
             control={control}
-            name="category"
+            name="categoryId"
             label="カテゴリ"
             items={categories.map((category) => ({ label: category.title, value: category.id }))}
           />
