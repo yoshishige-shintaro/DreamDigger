@@ -14,13 +14,14 @@ type CircleIconButtonProps = {
   icon: IconOptions;
   onPress: () => void;
   animationStyle: Style;
-  bottom: number;
-  right: number;
 };
 const CircleIconButton = (props: CircleIconButtonProps) => {
-  const { icon, onPress, animationStyle, bottom, right } = props;
+  const { icon, onPress, animationStyle } = props;
   return (
-    <Animated.View style={animationStyle} className={`absolute bottom-${bottom} right-${right}`}>
+    <Animated.View
+      style={animationStyle}
+      className={`absolute ${icon === IconOptions.TRASH ? "bottom-28" : "bottom-10"}  right-10`}
+    >
       <TouchableHighlight
         style={{
           shadowColor: "#000000",
@@ -28,9 +29,11 @@ const CircleIconButton = (props: CircleIconButtonProps) => {
           shadowRadius: 8,
           shadowOffset: { width: 0, height: 8 },
         }}
-        className="w-16 h-16 bg-sky-200 rounded-full justify-center items-center"
+        className={`w-16 h-16 bg-sky-200 rounded-full justify-center items-center ${
+          icon === IconOptions.TRASH ? "bg-red-500" : ""
+        }`}
         onPress={onPress}
-        underlayColor={"#e0f2fe"}
+        underlayColor={icon === IconOptions.TRASH ? "#fecaca" : "#e0f2fe"}
       >
         <Feather name={icon} size={48} color="#fff" />
       </TouchableHighlight>
