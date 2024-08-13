@@ -3,114 +3,114 @@ import AddBucketListItemModal from "@/components/bucketList/AddBucketListItemMod
 import BucketList from "@/components/bucketList/BucketList";
 import Colors from "@/constants/Colors";
 import { useDiggingScreen } from "@/hooks/bucketList/useDiggingScreen";
-import { BucketItem, StatusValue } from "@/lib/types/BucketItem";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useRef, useState } from "react";
 import { Animated, Dimensions } from "react-native";
 
-const DUMMY_BUCKET_ITEMS: BucketItem[] = [
-  {
-    id: "1",
-    category: "仕事",
-    createdAt: new Date(),
-    deadline: new Date(new Date().getTime() + 60 * 1000),
-    status: StatusValue.DURING_CHALLENGE,
-    title: "技術書を読む",
-  },
-  {
-    id: "2",
-    category: "プライベート",
-    createdAt: new Date(),
-    deadline: new Date(new Date().getTime() + 30 * 60 * 1000 + 23 * 60 * 60 * 1000),
-    status: StatusValue.DURING_CHALLENGE,
-    title: "北海道に行く",
-  },
-  {
-    id: "3",
-    category: "仕事",
-    createdAt: new Date(),
-    deadline: new Date(new Date().getTime() + 30 * 60 * 1000),
-    status: StatusValue.DURING_CHALLENGE,
-    title: "ビジネス書を読む",
-  },
-  {
-    id: "4",
-    category: "プライベート",
-    createdAt: new Date(),
-    deadline: new Date(new Date().getTime() + 30 * 60 * 1000 + 30 * 60 * 60 * 1000),
-    status: StatusValue.DURING_CHALLENGE,
-    title: "沖縄に行く",
-  },
-  {
-    id: "5",
-    category: "仕事",
-    createdAt: new Date(),
-    deadline: new Date(new Date().getTime() + 60 * 1000),
-    status: StatusValue.DURING_CHALLENGE,
-    title: "技術書を読む",
-  },
-  {
-    id: "6",
-    category: "プライベート",
-    createdAt: new Date(),
-    deadline: new Date(new Date().getTime() + 30 * 60 * 1000 + 23 * 60 * 60 * 1000),
-    status: StatusValue.DURING_CHALLENGE,
-    title: "北海道に行く",
-  },
-  {
-    id: "7",
-    category: "仕事",
-    createdAt: new Date(),
-    deadline: new Date(new Date().getTime() + 30 * 60 * 1000),
-    status: StatusValue.DURING_CHALLENGE,
-    title: "ビジネス書を読む",
-  },
-  {
-    id: "8",
-    category: "プライベート",
-    createdAt: new Date(),
-    deadline: new Date(new Date().getTime() + 30 * 60 * 1000 + 30 * 60 * 60 * 1000),
-    status: StatusValue.DURING_CHALLENGE,
-    title: "沖縄に行く",
-  },
-  {
-    id: "9",
-    category: "仕事",
-    createdAt: new Date(),
-    deadline: new Date(new Date().getTime() + 60 * 1000),
-    status: StatusValue.DURING_CHALLENGE,
-    title: "技術書を読む",
-  },
-  {
-    id: "10",
-    category: "プライベート",
-    createdAt: new Date(),
-    deadline: new Date(new Date().getTime() + 30 * 60 * 1000 + 23 * 60 * 60 * 1000),
-    status: StatusValue.DURING_CHALLENGE,
-    title: "北海道に行く",
-  },
-  {
-    id: "11",
-    category: "仕事",
-    createdAt: new Date(),
-    deadline: new Date(new Date().getTime() + 30 * 60 * 1000),
-    status: StatusValue.DURING_CHALLENGE,
-    title: "ビジネス書を読む",
-  },
-  {
-    id: "12",
-    category: "プライベート",
-    createdAt: new Date(),
-    deadline: new Date(new Date().getTime() + 30 * 60 * 1000 + 30 * 60 * 60 * 1000),
-    status: StatusValue.DURING_CHALLENGE,
-    title: "沖縄に行く",
-  },
-];
+// const DUMMY_BUCKET_ITEMS: BucketItem[] = [
+//   {
+//     id: "1",
+//     category: "仕事",
+//     createdAt: new Date(),
+//     deadline: new Date(new Date().getTime() + 60 * 1000),
+//     status: StatusValue.DURING_CHALLENGE,
+//     title: "技術書を読む",
+//   },
+//   {
+//     id: "2",
+//     category: "プライベート",
+//     createdAt: new Date(),
+//     deadline: new Date(new Date().getTime() + 30 * 60 * 1000 + 23 * 60 * 60 * 1000),
+//     status: StatusValue.DURING_CHALLENGE,
+//     title: "北海道に行く",
+//   },
+//   {
+//     id: "3",
+//     category: "仕事",
+//     createdAt: new Date(),
+//     deadline: new Date(new Date().getTime() + 30 * 60 * 1000),
+//     status: StatusValue.DURING_CHALLENGE,
+//     title: "ビジネス書を読む",
+//   },
+//   {
+//     id: "4",
+//     category: "プライベート",
+//     createdAt: new Date(),
+//     deadline: new Date(new Date().getTime() + 30 * 60 * 1000 + 30 * 60 * 60 * 1000),
+//     status: StatusValue.DURING_CHALLENGE,
+//     title: "沖縄に行く",
+//   },
+//   {
+//     id: "5",
+//     category: "仕事",
+//     createdAt: new Date(),
+//     deadline: new Date(new Date().getTime() + 60 * 1000),
+//     status: StatusValue.DURING_CHALLENGE,
+//     title: "技術書を読む",
+//   },
+//   {
+//     id: "6",
+//     category: "プライベート",
+//     createdAt: new Date(),
+//     deadline: new Date(new Date().getTime() + 30 * 60 * 1000 + 23 * 60 * 60 * 1000),
+//     status: StatusValue.DURING_CHALLENGE,
+//     title: "北海道に行く",
+//   },
+//   {
+//     id: "7",
+//     category: "仕事",
+//     createdAt: new Date(),
+//     deadline: new Date(new Date().getTime() + 30 * 60 * 1000),
+//     status: StatusValue.DURING_CHALLENGE,
+//     title: "ビジネス書を読む",
+//   },
+//   {
+//     id: "8",
+//     category: "プライベート",
+//     createdAt: new Date(),
+//     deadline: new Date(new Date().getTime() + 30 * 60 * 1000 + 30 * 60 * 60 * 1000),
+//     status: StatusValue.DURING_CHALLENGE,
+//     title: "沖縄に行く",
+//   },
+//   {
+//     id: "9",
+//     category: "仕事",
+//     createdAt: new Date(),
+//     deadline: new Date(new Date().getTime() + 60 * 1000),
+//     status: StatusValue.DURING_CHALLENGE,
+//     title: "技術書を読む",
+//   },
+//   {
+//     id: "10",
+//     category: "プライベート",
+//     createdAt: new Date(),
+//     deadline: new Date(new Date().getTime() + 30 * 60 * 1000 + 23 * 60 * 60 * 1000),
+//     status: StatusValue.DURING_CHALLENGE,
+//     title: "北海道に行く",
+//   },
+//   {
+//     id: "11",
+//     category: "仕事",
+//     createdAt: new Date(),
+//     deadline: new Date(new Date().getTime() + 30 * 60 * 1000),
+//     status: StatusValue.DURING_CHALLENGE,
+//     title: "ビジネス書を読む",
+//   },
+//   {
+//     id: "12",
+//     category: "プライベート",
+//     createdAt: new Date(),
+//     deadline: new Date(new Date().getTime() + 30 * 60 * 1000 + 30 * 60 * 60 * 1000),
+//     status: StatusValue.DURING_CHALLENGE,
+//     title: "沖縄に行く",
+//   },
+// ];
 
 export default function DiggingScreen() {
   const Tab = createMaterialTopTabNavigator();
 
   const { bucketItems, categories } = useDiggingScreen();
+  console.log(categories);
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const deviceHeight = Dimensions.get("window").height;
@@ -148,14 +148,14 @@ export default function DiggingScreen() {
           justifyContent: "center",
         }}
       >
-        {categories.map((category, index) => (
-          <Tab.Screen name={category} key={category}>
+        {[{ id: "all-items", title: "全て" }, ...categories].map((category, index) => (
+          <Tab.Screen name={category.title} key={category.id}>
             {() => (
               <BucketList
                 bucketItems={
                   index === 0
-                    ? DUMMY_BUCKET_ITEMS
-                    : DUMMY_BUCKET_ITEMS.filter((item) => item.category === category)
+                    ? bucketItems
+                    : bucketItems.filter((item) => item.categoryId === category.id)
                 }
               />
             )}

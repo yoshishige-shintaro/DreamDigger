@@ -2,6 +2,7 @@ import RhfDatetimePicker from "@/components/common/RhfDatetimePicker";
 import RhfPickerSelect from "@/components/common/RhfPickerSelect";
 import RhfTextInput from "@/components/common/RhfTextInput";
 import { useAddBucketItemModal } from "@/hooks/bucketList/useAddBucketItemModal";
+import { Category } from "@/lib/types/Category";
 import React from "react";
 import { Animated, Button, Pressable, Text, View } from "react-native";
 
@@ -9,7 +10,7 @@ const AddBucketListItemModal = (props: {
   isOpen: boolean;
   slideAnim: Animated.Value;
   closeModal: () => void;
-  categories: string[];
+  categories: Category[];
 }) => {
   const { closeModal, slideAnim, categories } = props;
   const { control, onSubmit } = useAddBucketItemModal({ closeModal });
@@ -34,7 +35,7 @@ const AddBucketListItemModal = (props: {
             control={control}
             name="category"
             label="カテゴリ"
-            items={categories.slice(1, 3).map((category) => ({ label: category, value: category }))}
+            items={categories.map((category) => ({ label: category.title, value: category.id }))}
           />
           <RhfDatetimePicker control={control} name="deadline" label="達成期限" />
         </View>
