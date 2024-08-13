@@ -1,5 +1,6 @@
 import { Feather } from "@expo/vector-icons";
-import { TouchableHighlight, View } from "react-native";
+import { Style } from "nativewind/dist/style-sheet/runtime";
+import { Animated, TouchableHighlight } from "react-native";
 
 export const IconOptions = {
   CHECK: "check",
@@ -12,11 +13,14 @@ export type IconOptions = (typeof IconOptions)[keyof typeof IconOptions];
 type CircleIconButtonProps = {
   icon: IconOptions;
   onPress: () => void;
+  animationStyle: Style;
+  bottom: number;
+  right: number;
 };
 const CircleIconButton = (props: CircleIconButtonProps) => {
-  const { icon, onPress } = props;
+  const { icon, onPress, animationStyle, bottom, right } = props;
   return (
-    <View className="absolute bottom-10 right-10">
+    <Animated.View style={animationStyle} className={`absolute bottom-${bottom} right-${right}`}>
       <TouchableHighlight
         style={{
           shadowColor: "#000000",
@@ -30,7 +34,7 @@ const CircleIconButton = (props: CircleIconButtonProps) => {
       >
         <Feather name={icon} size={48} color="#fff" />
       </TouchableHighlight>
-    </View>
+    </Animated.View>
   );
 };
 
