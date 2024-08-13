@@ -22,8 +22,6 @@ export const useDiggingScreen: UserDiggingScreen = () => {
       const categoriesRes = (await db.getAllAsync(
         `SELECT * FROM ${TableValue.CATEGORY_TABLE}`,
       )) as RawCategory[];
-      console.log(categoriesRes);
-
       const categories = categoriesRes.map((c) => new Category(c));
       setCategories(categories);
     };

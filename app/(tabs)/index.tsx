@@ -110,7 +110,6 @@ export default function DiggingScreen() {
   const Tab = createMaterialTopTabNavigator();
 
   const { bucketItems, categories } = useDiggingScreen();
-  console.log(categories);
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const deviceHeight = Dimensions.get("window").height;
