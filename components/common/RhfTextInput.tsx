@@ -21,7 +21,7 @@ const RhfTextInput = <T extends FieldValues>(props: InputProps<T>): JSX.Element 
         {...inputAttributes}
         {...restField}
         className={`rounded border px-4 py-2 outline-none focus:border-cyan-300 ${
-          error ? "border-error" : "border-gray-300"
+          error ? "border-rose-700" : "border-gray-300"
         } ${className}`}
       />
       {error && (

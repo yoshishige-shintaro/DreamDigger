@@ -1,11 +1,8 @@
-import AddBucketListItemButton from "@/components/bucketList/AddBucketListItemButton";
 import AddBucketListItemModal from "@/components/bucketList/AddBucketListItemModal";
 import BucketList from "@/components/bucketList/BucketList";
 import Colors from "@/constants/Colors";
 import { useDiggingScreen } from "@/hooks/bucketList/useDiggingScreen";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { useRef, useState } from "react";
-import { Animated, Dimensions } from "react-native";
 
 // const DUMMY_BUCKET_ITEMS: BucketItem[] = [
 //   {
@@ -111,27 +108,6 @@ export default function DiggingScreen() {
 
   const { bucketItems, categories } = useDiggingScreen();
 
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const deviceHeight = Dimensions.get("window").height;
-  const slideAnim = useRef(new Animated.Value(deviceHeight)).current; // 初期位置を設定
-
-  const closeModal = () => {
-    Animated.timing(slideAnim, {
-      toValue: deviceHeight,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => setIsOpenModal(false));
-  };
-  const openModal = () => {
-    setIsOpenModal(true);
-    // モーダルを表示するアニメーション
-    Animated.timing(slideAnim, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  };
-
   return (
     <>
       <Tab.Navigator
@@ -161,15 +137,8 @@ export default function DiggingScreen() {
           </Tab.Screen>
         ))}
       </Tab.Navigator>
-      <AddBucketListItemButton openModal={openModal} />
-      {isOpenModal && (
-        <AddBucketListItemModal
-          isOpen={isOpenModal}
-          slideAnim={slideAnim}
-          closeModal={closeModal}
-          categories={categories}
-        />
-      )}
+
+      <AddBucketListItemModal categories={categories} />
     </>
   );
 }

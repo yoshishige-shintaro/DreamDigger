@@ -4,7 +4,9 @@ import { SQLInsertBucketListItem } from "@/lib/utils/db";
 import { createUuid } from "@/lib/utils/uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSQLiteContext } from "expo-sqlite";
+import { useRef, useState } from "react";
 import { Control, useForm } from "react-hook-form";
+import { Animated, Dimensions } from "react-native";
 import { useSetRecoilState } from "recoil";
 import z from "zod";
 
@@ -32,14 +34,17 @@ const buildBody = (data: AddBucketItemFormInput): RawBucketItem => ({
   title: data.bucketItemTitle,
 });
 
-type UseAddBucketItemModal = (args: { closeModal: () => void }) => {
+type UseAddBucketItemModal = () => {
   control: Control<AddBucketItemFormInput>;
   onSubmit: () => Promise<void>;
+  openModal: () => void;
+  closeModal: () => void;
+  isOpenModal: boolean;
+  slideAnim: Animated.Value;
 };
 
 // hooks 本体 ========================================================================================
-export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
-  const { closeModal } = args;
+export const useAddBucketItemModal: UseAddBucketItemModal = () => {
   const setBucketItems = useSetRecoilState(bucketListItemsState);
   const defaultValues: AddBucketItemFormInput = {
     bucketItemTitle: "",
@@ -48,7 +53,7 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
   };
 
   // React Hook Form
-  const { control, handleSubmit } = useForm<AddBucketItemFormInput>({
+  const { control, handleSubmit, reset } = useForm<AddBucketItemFormInput>({
     defaultValues,
     resolver: zodResolver(schema),
   });
@@ -68,13 +73,43 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
       console.log(e);
       return;
     }
+
     console.log("やりたいこと追加しました");
 
     closeModal();
   };
 
+  // モーダル開閉処理 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const deviceHeight = Dimensions.get("window").height;
+  const slideAnim = useRef(new Animated.Value(deviceHeight)).current; // 初期位置を設定
+
+  const closeModal = () => {
+    Animated.timing(slideAnim, {
+      toValue: deviceHeight,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setIsOpenModal(false);
+      reset();
+    });
+  };
+  const openModal = () => {
+    setIsOpenModal(true);
+    // モーダルを表示するアニメーション
+    Animated.timing(slideAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
   return {
     control,
     onSubmit: handleSubmit(handleClickAddButton),
+    closeModal,
+    openModal,
+    isOpenModal,
+    slideAnim,
   };
 };
