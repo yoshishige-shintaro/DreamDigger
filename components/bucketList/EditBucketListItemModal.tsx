@@ -1,10 +1,7 @@
 import AchieveBucketListItemButton from "@/components/bucketList/AchieveBucketListItemButton";
 import BucketListItem from "@/components/bucketList/BucketListItem";
 import DeleteBucketListItemButton from "@/components/bucketList/DeleteBucketListItemButton";
-import {
-  EditTypeValues,
-  useEditBucketItemModal,
-} from "@/hooks/bucketList/useEditBucketItemModal";
+import { EditTypeValues, useEditBucketItemModal } from "@/hooks/bucketList/useEditBucketItemModal";
 import React from "react";
 import { Animated, Button, FlatList, Pressable, Text, View } from "react-native";
 
@@ -66,6 +63,7 @@ const EditBucketListItemModal = () => {
                   title={editType === EditTypeValues.DELETE ? "削除する" : "達成済み"}
                   onPress={handleClickEditButton}
                   disabled={isDisabledDeleteButton}
+                  color={editType === EditTypeValues.DELETE ? "red" : ""}
                 />
               </View>
             </View>
