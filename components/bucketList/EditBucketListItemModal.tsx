@@ -60,7 +60,7 @@ const EditBucketListItemModal = () => {
               </View>
               <View className="flex-row justify-center items-center flex-1">
                 <Button
-                  title={editType === EditTypeValues.DELETE ? "削除する" : "達成済み"}
+                  title={editType === EditTypeValues.DELETE ? "削除" : "達成！！"}
                   onPress={handleClickEditButton}
                   disabled={isDisabledDeleteButton}
                   color={editType === EditTypeValues.DELETE ? "red" : ""}
