@@ -1,6 +1,7 @@
 import BucketListItem from "@/components/bucketList/BucketListItem";
 import { BucketItem } from "@/lib/types/BucketItem";
-import { FlatList, View } from "react-native";
+import { FontAwesome6 } from "@expo/vector-icons";
+import { FlatList, Text, View } from "react-native";
 
 type BucketListProps = {
   bucketItems: BucketItem[];
@@ -9,8 +10,12 @@ type BucketListProps = {
 const BucketList = (props: BucketListProps): JSX.Element => {
   const { bucketItems } = props;
 
-  return (
-    // TODO: 画面全体がスクロールされるように修正
+  return bucketItems.length === 0 ? (
+    <View className="flex-1 justify-center items-center gap-4">
+      <FontAwesome6 name="person-digging" size={72} color="gray" />
+      <Text className="text-base text-gray-500">やりたいことが登録されていません</Text>
+    </View> // TODO: 画面全体がスクロールされるように修正
+  ) : (
     <View className="grow-0.8 mt-12">
       <FlatList
         // 締め切り期限までの残り時間（降順）
