@@ -5,7 +5,7 @@ import { Text, View } from "@/components/common/Themed";
 export default function TabTwoScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>ご飯休憩</Text>
+      <Text className="text-9xl font-extrabold rotate-45">ご飯休憩</Text>
     </View>
   );
 }
@@ -17,8 +17,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    fontSize: 20,
+    fontSize: 40,
     fontWeight: "bold",
+    height: 40,
   },
   separator: {
     marginVertical: 30,

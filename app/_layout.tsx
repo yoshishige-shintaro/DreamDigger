@@ -1,10 +1,13 @@
+import { BASE_COLOR } from "@/constants/Colors";
 import { DB_NAME, migrateDbIfNeeded } from "@/lib/utils/db";
+import { AntDesign } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Link, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { SQLiteProvider } from "expo-sqlite";
 import { useEffect } from "react";
+import { Pressable, Text, View } from "react-native";
 
 import "react-native-reanimated";
 import { RecoilRoot } from "recoil";
@@ -52,7 +55,29 @@ function RootLayoutNav() {
       <RecoilRoot>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+          <Stack.Screen
+            name="category"
+            options={{
+              presentation: "card",
+              headerTitle: "カテゴリ管理",
+              headerLeft: () => (
+                <Link href="/(tabs)/" asChild>
+                  <Pressable>
+                    {({ pressed }) => (
+                      <View className="flex-row" style={{ opacity: pressed ? 0.5 : 1 }}>
+                        <AntDesign name="left" size={24} color="white" />
+                        <Text className="text-white font-bold text-base">戻る</Text>
+                      </View>
+                    )}
+                  </Pressable>
+                </Link>
+              ),
+              headerStyle: { backgroundColor: BASE_COLOR },
+              headerTitleStyle: {
+                color: "#fff",
+              },
+            }}
+          />
         </Stack>
       </RecoilRoot>
     </SQLiteProvider>

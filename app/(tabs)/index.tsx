@@ -31,7 +31,7 @@ export default function DiggingScreen() {
             fontSize: 14,
           },
           tabBarActiveTintColor: Colors.light.text,
-          tabBarIndicatorStyle: { backgroundColor: Colors.light.tabBarIndicator },
+          tabBarIndicatorStyle: { backgroundColor: Colors.light.tabBarIndicator, height: 3 },
           tabBarScrollEnabled: true,
         }}
         // SCREEN の wrapper のスタイル
@@ -39,6 +39,7 @@ export default function DiggingScreen() {
           flex: 1,
           flexDirection: "row",
           justifyContent: "center",
+          backgroundColor: "#f3f4f6a",
         }}
       >
         {[CATEGORY_ALL_ITEM, ...categories].map((category, index) => (

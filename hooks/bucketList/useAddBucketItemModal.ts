@@ -68,7 +68,6 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
 
   const db = useSQLiteContext();
   const handleClickAddButton = async (data: AddBucketItemFormInput) => {
-    console.log(data.categoryId);
 
     try {
       await db.execAsync(SQLInsertBucketListItem(buildBody(data)));

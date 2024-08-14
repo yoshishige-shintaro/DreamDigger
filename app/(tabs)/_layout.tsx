@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import Colors, { BASE_COLOR } from "@/constants/Colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Link, Tabs } from "expo-router";
 import React from "react";
@@ -19,19 +19,17 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
         headerStyle: {
-          backgroundColor: Colors[colorScheme ?? "light"].background,
+          backgroundColor: BASE_COLOR,
         },
         headerTitleStyle: {
-          color: Colors[colorScheme ?? "light"].text,
+          color: "#fff",
+          fontSize: 18,
+          fontWeight: 900,
         },
         tabBarStyle: {
           backgroundColor: Colors[colorScheme ?? "light"].background,
-          height: 80,
         },
-        headerStatusBarHeight: 55,
       }}
     >
       <Tabs.Screen
@@ -40,11 +38,11 @@ export default function TabLayout() {
           title: "発掘する",
           tabBarIcon: ({ color }) => <TabBarIcon name="pickaxe" color={color} />,
           headerRight: () => (
-            <Link href="/modal" asChild>
+            <Link href="/category" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <Text
-                    className="text-gray-500 font-medium"
+                    className="text-white font-bold"
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                   >
                     カテゴリ管理
@@ -70,5 +68,6 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
+    
   );
 }
