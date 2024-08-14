@@ -16,6 +16,7 @@ type UseCategoryScreen = () => {
   isOpenModal: boolean;
   closeModal: () => void;
   handleClickEditButton: (selectedCategory: Category) => void;
+  handleClickDeleteButton: (category: Category) => void;
   modalType: ModalType;
   selectedCategory: Category | null;
   slideAnim: Animated.Value;
@@ -53,6 +54,11 @@ export const useCategoryScreen: UseCategoryScreen = () => {
     openModal();
     setModalType(ModalType.EDIT);
   };
+  const handleClickDeleteButton = (category: Category) => {
+    setSelectedCategory(category);
+    openModal();
+    setModalType(ModalType.DELETE);
+  };
 
   return {
     categories,
@@ -60,6 +66,7 @@ export const useCategoryScreen: UseCategoryScreen = () => {
     isOpenModal,
     openModal,
     handleClickEditButton,
+    handleClickDeleteButton,
     modalType,
     selectedCategory,
     slideAnim,
