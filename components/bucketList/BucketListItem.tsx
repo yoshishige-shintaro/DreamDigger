@@ -15,7 +15,15 @@ const BucketListItem = (props: BucketListItemProps): JSX.Element => {
     useBucketListItem(props);
 
   return (
-    <View className="flex-row justify-between items-center bg-white h-16 p-4 rounded-md mb-1">
+    <View
+      style={{
+        shadowColor: "#000000",
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 4 },
+      }}
+      className="flex-row justify-between items-center bg-white h-16 p-4 rounded-md mb-1"
+    >
       <CheckBox
         isChecked={isChecked}
         onClick={onClickCheckBox}

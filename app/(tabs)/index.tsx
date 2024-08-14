@@ -19,7 +19,13 @@ export default function DiggingScreen() {
     <>
       <Tab.Navigator
         screenOptions={{
-          tabBarStyle: { backgroundColor: Colors.light.background },
+          tabBarStyle: {
+            backgroundColor: Colors.light.background,
+            shadowColor: "#000000",
+            shadowOpacity: 0.1,
+            shadowRadius: 4,
+            shadowOffset: { width: 0, height: 4 },
+          },
           tabBarItemStyle: { width: "auto" },
           tabBarLabelStyle: {
             fontSize: 14,
