@@ -3,12 +3,17 @@ import BucketList from "@/components/bucketList/BucketList";
 import EditBucketListItemModal from "@/components/bucketList/EditBucketListItemModal";
 import Colors from "@/constants/Colors";
 import { useDiggingScreen } from "@/hooks/bucketList/useDiggingScreen";
+import { CATEGORY_ALL_ITEM } from "@/lib/types/Category";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { useState } from "react";
 
 export default function DiggingScreen() {
   const Tab = createMaterialTopTabNavigator();
 
   const { bucketItems, categories } = useDiggingScreen();
+
+  // やりたいこと追加モーダルの「カテゴリ」デフォルト値を更新するためのステート
+  const [currentCategoryId, setCurrentCategoryId] = useState(CATEGORY_ALL_ITEM.id);
 
   return (
     <>
@@ -16,6 +21,9 @@ export default function DiggingScreen() {
         screenOptions={{
           tabBarStyle: { backgroundColor: Colors.light.background },
           tabBarItemStyle: { width: "auto" },
+          tabBarLabelStyle: {
+            fontSize: 14,
+          },
           tabBarActiveTintColor: Colors.light.text,
           tabBarIndicatorStyle: { backgroundColor: Colors.light.tabBarIndicator },
           tabBarScrollEnabled: true,
@@ -27,8 +35,16 @@ export default function DiggingScreen() {
           justifyContent: "center",
         }}
       >
-        {[{ id: "all-items", title: "全て" }, ...categories].map((category, index) => (
-          <Tab.Screen name={category.title} key={category.id}>
+        {[CATEGORY_ALL_ITEM, ...categories].map((category, index) => (
+          <Tab.Screen
+            name={category.title}
+            key={category.id}
+            listeners={{
+              focus: () => {
+                setCurrentCategoryId(category.id);
+              },
+            }}
+          >
             {() => (
               <BucketList
                 bucketItems={
@@ -41,8 +57,9 @@ export default function DiggingScreen() {
           </Tab.Screen>
         ))}
       </Tab.Navigator>
-      <AddBucketListItemModal categories={categories} />
-
+      {/* やりたいこと追加ボタン & モーダル */}
+      <AddBucketListItemModal currentCategoryId={currentCategoryId} categories={categories} />
+      {/* やりたいこと削除・編集ボタン & モーダル */}
       <EditBucketListItemModal />
     </>
   );

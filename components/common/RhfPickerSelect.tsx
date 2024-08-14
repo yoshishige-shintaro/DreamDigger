@@ -13,7 +13,7 @@ const RhfPickerSelect = <T extends FieldValues>(props: InputProps<T>): JSX.Eleme
   const { name, control, label, items } = props;
 
   const {
-    field: { onChange },
+    field: { onChange, value },
     fieldState: { error },
   } = useController({ control, name });
 
@@ -22,6 +22,7 @@ const RhfPickerSelect = <T extends FieldValues>(props: InputProps<T>): JSX.Eleme
       {label && <Text className="text-sm">{label}</Text>}
       <View>
         <RNPickerSelect
+          value={value}
           onValueChange={(value: string) => onChange(value)}
           items={items}
           placeholder={{ label: "未選択", value: "" }}

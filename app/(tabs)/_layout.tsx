@@ -1,9 +1,8 @@
 import Colors from "@/constants/Colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
 import React from "react";
-import { Pressable, useColorScheme } from "react-native";
+import { Pressable, Text, useColorScheme } from "react-native";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -30,9 +29,9 @@ export default function TabLayout() {
         },
         tabBarStyle: {
           backgroundColor: Colors[colorScheme ?? "light"].background,
-          height:80
+          height: 80,
         },
-        headerStatusBarHeight:55
+        headerStatusBarHeight: 55,
       }}
     >
       <Tabs.Screen
@@ -44,12 +43,12 @@ export default function TabLayout() {
             <Link href="/modal" asChild>
               <Pressable>
                 {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? "light"].text}
+                  <Text
+                    className="text-gray-500 font-medium"
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
+                  >
+                    カテゴリ管理
+                  </Text>
                 )}
               </Pressable>
             </Link>

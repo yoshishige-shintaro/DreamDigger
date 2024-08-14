@@ -26,6 +26,7 @@ export const useDiggingScreen: UserDiggingScreen = () => {
         `SELECT * FROM ${TableValue.CATEGORY_TABLE}`,
       )) as RawCategory[];
       const categories = categoriesRes.map((c) => new Category(c));
+
       setCategories(categories);
     };
     getAll();

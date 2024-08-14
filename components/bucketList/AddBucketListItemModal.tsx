@@ -9,12 +9,13 @@ import { Animated, Button, Pressable, Text, View } from "react-native";
 
 type AddBucketListItemModalProps = {
   categories: Category[];
+  currentCategoryId: string;
 };
 
 const AddBucketListItemModal = (props: AddBucketListItemModalProps) => {
-  const { categories } = props;
+  const { categories, currentCategoryId } = props;
   const { control, onSubmit, closeModal, openModal, slideAnim, isOpenModal } =
-    useAddBucketItemModal();
+    useAddBucketItemModal({ currentCategoryId });
 
   return (
     <>

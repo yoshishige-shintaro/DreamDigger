@@ -11,3 +11,8 @@ export class Category {
     this.title = data.title;
   }
 }
+
+export const CATEGORY_ALL_ITEM: Category = {
+  id: "all-items",
+  title: "すべて",
+};

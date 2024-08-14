@@ -1,10 +1,11 @@
 import { bucketListItemsState } from "@/lib/atom/bucketListItems";
 import { BucketItem, RawBucketItem, StatusValue } from "@/lib/types/BucketItem";
+import { CATEGORY_ALL_ITEM } from "@/lib/types/Category";
 import { SQLInsertBucketListItem } from "@/lib/utils/db";
 import { createUuid } from "@/lib/utils/uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSQLiteContext } from "expo-sqlite";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Control, useForm } from "react-hook-form";
 import { Animated, Dimensions } from "react-native";
 import { useSetRecoilState } from "recoil";
@@ -34,7 +35,7 @@ const buildBody = (data: AddBucketItemFormInput): RawBucketItem => ({
   title: data.bucketItemTitle,
 });
 
-type UseAddBucketItemModal = () => {
+type UseAddBucketItemModal = (args: { currentCategoryId: string }) => {
   control: Control<AddBucketItemFormInput>;
   onSubmit: () => Promise<void>;
   openModal: () => void;
@@ -44,19 +45,26 @@ type UseAddBucketItemModal = () => {
 };
 
 // hooks 本体 ========================================================================================
-export const useAddBucketItemModal: UseAddBucketItemModal = () => {
+export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
+  const { currentCategoryId } = args;
+
   const setBucketItems = useSetRecoilState(bucketListItemsState);
   const defaultValues: AddBucketItemFormInput = {
     bucketItemTitle: "",
-    categoryId: undefined,
+    categoryId: currentCategoryId === CATEGORY_ALL_ITEM.id ? undefined : currentCategoryId,
     deadline: new Date(),
   };
 
   // React Hook Form
-  const { control, handleSubmit, reset } = useForm<AddBucketItemFormInput>({
+  const { control, handleSubmit, reset, setValue } = useForm<AddBucketItemFormInput>({
     defaultValues,
     resolver: zodResolver(schema),
   });
+
+  // FIXME:なぜかdefaultValue だと表示切り替わらないので useEffect を使っている
+  useEffect(() => {
+    setValue("categoryId", currentCategoryId);
+  }, [currentCategoryId]);
 
   const db = useSQLiteContext();
   const handleClickAddButton = async (data: AddBucketItemFormInput) => {
