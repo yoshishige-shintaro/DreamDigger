@@ -5,6 +5,7 @@ import { Animated, Dimensions } from "react-native";
 import { useRecoilState } from "recoil";
 
 export const ModalType = {
+  ADD: "add",
   DELETE: "delete",
   EDIT: "edit",
 } as const;
@@ -17,6 +18,7 @@ type UseCategoryScreen = () => {
   closeModal: () => void;
   handleClickEditButton: (selectedCategory: Category) => void;
   handleClickDeleteButton: (category: Category) => void;
+  handleClickAddButton: () => void;
   modalType: ModalType;
   selectedCategory: Category | null;
   slideAnim: Animated.Value;
@@ -59,6 +61,10 @@ export const useCategoryScreen: UseCategoryScreen = () => {
     openModal();
     setModalType(ModalType.DELETE);
   };
+  const handleClickAddButton = () => {
+    openModal();
+    setModalType(ModalType.ADD);
+  };
 
   return {
     categories,
@@ -67,6 +73,7 @@ export const useCategoryScreen: UseCategoryScreen = () => {
     openModal,
     handleClickEditButton,
     handleClickDeleteButton,
+    handleClickAddButton,
     modalType,
     selectedCategory,
     slideAnim,

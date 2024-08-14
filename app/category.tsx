@@ -1,10 +1,12 @@
+import AddCategoryModal from "@/components/category/AddCategoryModal";
 import DeleteCategoryModal from "@/components/category/DeleteCategoryModal";
 import EditCategoryModal from "@/components/category/EditCategoryModal";
 import { View } from "@/components/common/Themed";
+import { BASE_COLOR } from "@/constants/Colors";
 import { ModalType, useCategoryScreen } from "@/hooks/category/useCategoryScree";
-import { Feather } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { useLayoutEffect } from "react";
+import { AntDesign, Feather } from "@expo/vector-icons";
+import { Link, Stack } from "expo-router";
+
 import { Pressable, Text } from "react-native";
 
 export default function CategoryScreen() {
@@ -14,20 +16,43 @@ export default function CategoryScreen() {
     isOpenModal,
     handleClickEditButton,
     handleClickDeleteButton,
+    handleClickAddButton,
     modalType,
     selectedCategory,
     slideAnim,
   } = useCategoryScreen();
 
-  // ヘッダーの設定
-  // FIXME:普通に自作のヘッダーを作成した方が良いとは思う
-  const navigation = useNavigation();
-  useLayoutEffect(() => {
-    navigation.setOptions({headerRight:()=>{<Text>ヘッダー</Text>}});
-  }, [navigation]);
+  // TODO：カテゴリの並べ替え
 
   return (
     <>
+      {/* ヘッダーの設定 */}
+      <Stack.Screen
+        options={{
+          headerTitle: "カテゴリ管理",
+          headerLeft: () => (
+            <Link href="/(tabs)/" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <View className="flex-row bg-sky-200" style={{ opacity: pressed ? 0.5 : 1 }}>
+                    <AntDesign name="left" size={24} color="white" />
+                    <Text className="text-white font-bold text-base ">戻る</Text>
+                  </View>
+                )}
+              </Pressable>
+            </Link>
+          ),
+          headerRight: () => (
+            <Pressable onPress={handleClickAddButton}>
+              {({ pressed }) => (
+                <View style={{ opacity: pressed ? 0.5 : 1, backgroundColor: BASE_COLOR }}>
+                  <Feather name="plus" size={24} color="white" />
+                </View>
+              )}
+            </Pressable>
+          ),
+        }}
+      />
       <View className="flex-1 bg-gray-100 px-4 py-8 ">
         {categories.map((category) => (
           <View
@@ -84,6 +109,10 @@ export default function CategoryScreen() {
           closeModal={closeModal}
           slideAnim={slideAnim}
         />
+      )}
+      {/* カテゴリ追加モーダル */}
+      {isOpenModal && modalType === ModalType.ADD && (
+        <AddCategoryModal closeModal={closeModal} slideAnim={slideAnim} />
       )}
     </>
   );
