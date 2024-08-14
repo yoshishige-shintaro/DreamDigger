@@ -41,6 +41,7 @@ export const useAddCategoryModal: UseAddCategoryModal = (args) => {
   const db = useSQLiteContext();
   const handleClickEditButton = async (data: AddCategoryFormInput) => {
     try {
+      // TODO:SQLの書き方をちゃんとする(https://docs.expo.dev/versions/latest/sdk/sqlite/)
       await db.runAsync(
         `INSERT INTO ${TableValue.CATEGORY_TABLE} (uuid, title) VALUES (?,?)`,
         createUuid(),

@@ -68,7 +68,6 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
 
   const db = useSQLiteContext();
   const handleClickAddButton = async (data: AddBucketItemFormInput) => {
-
     try {
       await db.execAsync(SQLInsertBucketListItem(buildBody(data)));
       const bucketItemsRes = (await db.getAllAsync(
@@ -98,7 +97,8 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
       useNativeDriver: true,
     }).start(() => {
       setIsOpenModal(false);
-      reset();
+      setValue("bucketItemTitle", "");
+      setValue("deadline", new Date());
     });
   };
   const openModal = () => {
