@@ -5,7 +5,7 @@ import { Animated } from "react-native";
 
 import { useRecoilValue } from "recoil";
 
-const DeleteBucketListItemButton = (): JSX.Element => {
+const DeleteBucketListItemButton = (props: { openModal: () => void }): JSX.Element => {
   const selectedItems = useRecoilValue(selectedBucketListItemState);
 
   const slideUp = useState(new Animated.Value(150))[0];
@@ -28,8 +28,7 @@ const DeleteBucketListItemButton = (): JSX.Element => {
   return (
     <CircleIconButton
       icon="trash-2"
-      // onPress={props.openModal}
-      onPress={() => {}}
+      onPress={props.openModal}
       animationStyle={{ transform: [{ translateX: slideUp }] }}
     />
   );

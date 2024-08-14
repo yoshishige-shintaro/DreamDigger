@@ -1,5 +1,5 @@
 import { bucketListItemsState } from "@/lib/atom/bucketListItems";
-import { BucketItem, RawBucketItem } from "@/lib/types/BucketItem";
+import { BucketItem, RawBucketItem, StatusValue } from "@/lib/types/BucketItem";
 import { Category, RawCategory } from "@/lib/types/Category";
 import { TableValue } from "@/lib/utils/table";
 import { useSQLiteContext } from "expo-sqlite";
@@ -32,7 +32,7 @@ export const useDiggingScreen: UserDiggingScreen = () => {
   }, []);
 
   return {
-    bucketItems,
+    bucketItems: bucketItems.filter((item) => item.status !== StatusValue.ACHIEVED),
     categories,
   };
 };

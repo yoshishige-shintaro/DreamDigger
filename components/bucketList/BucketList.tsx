@@ -8,6 +8,7 @@ type BucketListProps = {
 
 const BucketList = (props: BucketListProps): JSX.Element => {
   const { bucketItems } = props;
+
   return (
     // TODO: 画面全体がスクロールされるように修正
     <View className="grow-0.8 mt-12">
@@ -21,19 +22,10 @@ const BucketList = (props: BucketListProps): JSX.Element => {
               id={bucketItem.id}
               title={bucketItem.title}
               deadline={bucketItem.deadline}
-              // deadline={new Date(new Date().getTime() + 30 * 60 * 1000)}
             />
           );
         }}
       />
-      {/* {DUMMY_BUCKET_ITEMS.map((bucketItem) => (
-          <BucketListItem
-            key={bucketItem.id}
-            title={bucketItem.title}
-            deadline={bucketItem.deadline}
-            // deadline={new Date(new Date().getTime() + 30 * 60 * 1000)}
-          />
-        ))} */}
     </View>
   );
 };

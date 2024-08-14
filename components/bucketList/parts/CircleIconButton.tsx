@@ -20,7 +20,7 @@ const CircleIconButton = (props: CircleIconButtonProps) => {
   return (
     <Animated.View
       style={animationStyle}
-      className={`absolute ${icon === IconOptions.TRASH ? "bottom-28" : "bottom-10"}  right-10`}
+      className={`absolute ${icon === IconOptions.TRASH ? "bottom-28" : "bottom-10"}  right-5`}
     >
       <TouchableHighlight
         style={{
