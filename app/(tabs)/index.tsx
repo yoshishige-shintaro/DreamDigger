@@ -15,6 +15,7 @@ export default function DiggingScreen() {
       <Tab.Navigator
         screenOptions={{
           tabBarStyle: { backgroundColor: Colors.light.background },
+          tabBarItemStyle: { width: "auto" },
           tabBarActiveTintColor: Colors.light.text,
           tabBarIndicatorStyle: { backgroundColor: Colors.light.tabBarIndicator },
           tabBarScrollEnabled: true,
