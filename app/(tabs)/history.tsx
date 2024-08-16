@@ -1,14 +1,14 @@
 import { StyleSheet } from "react-native";
 
-import EditScreenInfo from "@/components/common/EditScreenInfo";
 import { Text, View } from "@/components/common/Themed";
 
 export default function TabTwoScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/two.tsx" />
+    <View className="flex-1 justify-center items-center -rotate-45 ">
+      <Text className="font-bold text-3xl">飲み物</Text>
+      <Text className="font-bold text-3xl">お菓子</Text>
+      <Text className="font-bold text-3xl">ティッシュ</Text>
+      <Text className="font-bold text-3xl">買ってくる</Text>
     </View>
   );
 }

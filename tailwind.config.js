@@ -13,6 +13,15 @@ module.exports = {
         0.7: "0.7",
         0.8: "0.8",
       },
+      keyframes: {
+        fill: {
+          "0%": { width: "0%" },
+          "100%": { width: "50%" },
+        },
+      },
+      animation: {
+        fill: "fill 2s ease-in-out forwards",
+      },
     },
     plugins: [],
   },

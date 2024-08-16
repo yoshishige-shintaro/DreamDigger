@@ -10,6 +10,7 @@ type BucketListProps = {
 const BucketList = (props: BucketListProps): JSX.Element => {
   const { bucketItems } = props;
 
+  // TODO:ちらつきを治す。_layout でデータを取得するようにするか、データの初期状態を null にしてハンドリングする。前者の方が良さそう
   return bucketItems.length === 0 ? (
     <View className="flex-1 justify-center items-center gap-4">
       <FontAwesome6 name="person-digging" size={72} color="gray" />

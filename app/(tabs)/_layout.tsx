@@ -54,7 +54,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="status"
         options={{
           title: "ステータス",
           tabBarIcon: ({ color }) => <TabBarIcon name="account" color={color} />,
@@ -68,6 +68,6 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
-    
+
   );
 }
