@@ -9,11 +9,11 @@ export const bucketItemsSchema = sqliteTable(TableValue.BUCKET_ITEMS_TABLE, {
   deadline: integer("deadline", { mode: "timestamp" }).notNull(),
   achievedAt: integer("achieved_at", { mode: "timestamp" }),
   status: text("status", { enum: [StatusValue.ACHIEVED, StatusValue.DURING_CHALLENGE] }).notNull(),
-  categoryId: text("category_id").notNull(),
+  categoryId: text("category_id"),
 });
 
 export const categorySchema = sqliteTable(TableValue.CATEGORY_TABLE, {
   uuid: text("uuid").notNull().primaryKey(),
   title: text("title").notNull(),
-  isActive: integer("is_active", { mode: "boolean" }).default(true),
+  isActive: integer("is_active", { mode: "boolean" }).default(true).notNull(),
 });
