@@ -1,19 +1,17 @@
 import { BASE_COLOR } from "@/constants/Colors";
-import { DB_NAME, migrateDbIfNeeded } from "@/lib/utils/db";
+import { DB_NAME, drizzleDb } from "@/lib/db/db";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { ErrorBoundaryProps, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { SQLiteProvider } from "expo-sqlite";
 import { useEffect } from "react";
+import migrations from "../drizzle/migrations";
 
+import { Text, View } from "react-native";
 import "react-native-reanimated";
 import { RecoilRoot } from "recoil";
-
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from "expo-router";
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
@@ -24,6 +22,18 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  // Sqlite マイグレーション
+  const { success: _, error } = useMigrations(drizzleDb, migrations);
+  useEffect(() => {
+    if (error) {
+      throw error;
+    }
+  });
+
+  return <RootLayoutNav />;
+}
+
+function RootLayoutNav() {
   const [loaded, error] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     ...FontAwesome.font,
@@ -44,12 +54,8 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
   return (
-    <SQLiteProvider databaseName={DB_NAME} onInit={migrateDbIfNeeded}>
+    <SQLiteProvider databaseName={DB_NAME}>
       <RecoilRoot>
         <Stack
           screenOptions={{
@@ -64,5 +70,14 @@ function RootLayoutNav() {
         </Stack>
       </RecoilRoot>
     </SQLiteProvider>
+  );
+}
+
+export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
+  return (
+    <View style={{ flex: 1, backgroundColor: "red" }}>
+      <Text>{error.message}</Text>
+      <Text onPress={retry}>再読み込み</Text>
+    </View>
   );
 }
