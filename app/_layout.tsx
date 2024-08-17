@@ -1,5 +1,5 @@
 import { BASE_COLOR } from "@/constants/Colors";
-import { DB_NAME, drizzleDb } from "@/lib/db/db";
+import { DB_NAME, drizzleDb, expoDb } from "@/lib/db/db";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useFonts } from "expo-font";
@@ -8,6 +8,8 @@ import * as SplashScreen from "expo-splash-screen";
 import { SQLiteProvider } from "expo-sqlite";
 import { useEffect } from "react";
 import migrations from "../drizzle/migrations";
+import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
+
 
 import { Text, View } from "react-native";
 import "react-native-reanimated";
@@ -22,6 +24,7 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  useDrizzleStudio(expoDb);
   // Sqlite マイグレーション
   const { success: _, error } = useMigrations(drizzleDb, migrations);
   useEffect(() => {
