@@ -22,6 +22,7 @@
     "@react-navigation/native": "^6.0.2",
     "babel-plugin-inline-import": "^3.0.0",
     "drizzle-orm": "^0.33.0",
+    "drizzle-zod": "^0.5.1",
     "expo": "~51.0.28",
     "expo-drizzle-studio-plugin": "^0.0.2",
     "expo-font": "~12.0.9",

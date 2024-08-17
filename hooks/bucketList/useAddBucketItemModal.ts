@@ -27,10 +27,10 @@ export type AddBucketItemFormInput = z.infer<typeof schema>;
 
 const buildBody = (data: AddBucketItemFormInput): RawBucketItem => ({
   uuid: createUuid(),
-  created_at_iso_string: new Date().toISOString(),
-  deadline_iso_string: data.deadline.toISOString(),
-  achieved_at_iso_string: null,
-  category_id: data.categoryId ?? null,
+  createdAt: new Date(),
+  deadline: data.deadline,
+  achievedAt: null,
+  categoryId: data.categoryId ?? null,
   status: StatusValue.DURING_CHALLENGE,
   title: data.bucketItemTitle,
 });
