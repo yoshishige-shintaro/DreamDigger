@@ -15,7 +15,22 @@ export const addCategory = async (drizzleDb: DrizzleDb, body: RawCategory): Prom
   await drizzleDb.insert(categorySchema).values(body);
 };
 
-// バケットアイテムの削除
+// カテゴリの削除
 export const deleteCategory = async (drizzleDb: DrizzleDb, categoryId: string): Promise<void> => {
-  await drizzleDb.delete(categorySchema).where(eq(categorySchema.uuid, categoryId));
+  await drizzleDb
+    .update(categorySchema)
+    .set({ isActive: false })
+    .where(eq(categorySchema.uuid, categoryId));
+};
+
+// カテゴリの編集
+export const editCategoryTitle = async (
+  drizzleDb: DrizzleDb,
+  categoryId: string,
+  title: string,
+) => {
+  await drizzleDb
+    .update(categorySchema)
+    .set({ title: title })
+    .where(eq(categorySchema.uuid, categoryId));
 };

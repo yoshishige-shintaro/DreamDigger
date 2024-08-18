@@ -15,6 +15,6 @@ export const useDiggingScreen: UserDiggingScreen = () => {
 
   return {
     bucketItems: bucketItems.filter((item) => item.status !== StatusValue.ACHIEVED),
-    categories,
+    categories: categories.filter((item) => item.isActive),
   };
 };

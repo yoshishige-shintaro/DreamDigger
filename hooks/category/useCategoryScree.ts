@@ -2,7 +2,7 @@ import { categoriesState } from "@/lib/atom/categories";
 import { Category } from "@/lib/types/Category";
 import { useRef, useState } from "react";
 import { Animated, Dimensions } from "react-native";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 
 export const ModalType = {
   ADD: "add",
@@ -25,7 +25,7 @@ type UseCategoryScreen = () => {
 };
 
 export const useCategoryScreen: UseCategoryScreen = () => {
-  const [categories, setCategories] = useRecoilState(categoriesState);
+  const categories = useRecoilValue(categoriesState);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   // モーダル開閉処理 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -67,7 +67,7 @@ export const useCategoryScreen: UseCategoryScreen = () => {
   };
 
   return {
-    categories,
+    categories: categories.filter((category) => category.isActive),
     closeModal,
     isOpenModal,
     openModal,

@@ -1,9 +1,9 @@
+import { addCategory } from "@/lib/api/category";
 import { categoriesState } from "@/lib/atom/categories";
-import { Category, RawCategory } from "@/lib/types/Category";
-import { TableValue } from "@/lib/utils/table";
+import { drizzleDb } from "@/lib/db/db";
+import { RawCategory } from "@/lib/types/Category";
 import { createUuid } from "@/lib/utils/uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSQLiteContext } from "expo-sqlite";
 import { Control, useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import z from "zod";
@@ -38,26 +38,19 @@ export const useAddCategoryModal: UseAddCategoryModal = (args) => {
     resolver: zodResolver(schema),
   });
 
-  const db = useSQLiteContext();
   const handleClickEditButton = async (data: AddCategoryFormInput) => {
+    const body: RawCategory = {
+      uuid: createUuid(),
+      isActive: true,
+      title: data.categoryTitle,
+    };
     try {
-      // TODO:SQLの書き方をちゃんとする(https://docs.expo.dev/versions/latest/sdk/sqlite/)
-      await db.runAsync(
-        `INSERT INTO ${TableValue.CATEGORY_TABLE} (uuid, title) VALUES (?,?)`,
-        createUuid(),
-        data.categoryTitle,
-      );
-      const categoriesRes = (await db.getAllAsync(
-        `SELECT * FROM ${TableValue.CATEGORY_TABLE}`,
-      )) as RawCategory[];
-      setCategories(categoriesRes.map((r) => new Category(r)));
+      await addCategory(drizzleDb, body);
     } catch (e) {
-      console.log("ERROR!!!");
       console.log(e);
-      return;
+      throw e;
     }
 
-    console.log("カテゴリを追加しました");
     reset();
     closeModal();
   };

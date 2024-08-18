@@ -52,12 +52,12 @@ export const addBucketItems = async (
 };
 
 // バケットアイテムの削除
-export const deleteBucketItem = async (drizzleDb: DrizzleDb, bucketItemIds: string[]) => {
+export const deleteBucketItems = async (drizzleDb: DrizzleDb, bucketItemIds: string[]) => {
   await drizzleDb.delete(bucketItemsSchema).where(inArray(bucketItemsSchema.uuid, bucketItemIds));
 };
 
 // バケットアイテムの達成
-export const achievedBucketItem = async (drizzleDb: DrizzleDb, bucketItemIds: string[]) => {
+export const achievedBucketItems = async (drizzleDb: DrizzleDb, bucketItemIds: string[]) => {
   await drizzleDb
     .update(bucketItemsSchema)
     .set({ status: StatusValue.ACHIEVED })

@@ -1,8 +1,7 @@
+import { achievedBucketItems, deleteBucketItems } from "@/lib/api/bucketListItem";
 import { bucketListItemsState } from "@/lib/atom/bucketListItems";
 import { selectedBucketListItemState } from "@/lib/atom/selectedBucketListItem";
-import { BucketItem, RawBucketItem, StatusValue } from "@/lib/types/BucketItem";
-import { TableValue } from "@/lib/utils/table";
-import { useSQLiteContext } from "expo-sqlite";
+import { drizzleDb } from "@/lib/db/db";
 import { useEffect, useRef, useState } from "react";
 import { Animated, Dimensions } from "react-native";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -60,7 +59,9 @@ export const useEditBucketItemModal: UseEditBucketItemModal = () => {
 
   const [selectedBucketItems, setSelectedBucketItems] = useRecoilState(selectedBucketListItemState);
   const setBucketItems = useSetRecoilState(bucketListItemsState);
-  const uuids = selectedBucketItems.map((s) => s.id);
+  const bucketItemIds = selectedBucketItems.map((s) => s.id);
+
+  // チェックボックスが外れてもモーダルからアイテムが消えないように、モーダルが開いたらselected...Items を更新しない
   const [selectedBucketItemsInModal, setSelectedBucketItemsInModal] = useState<
     {
       id: string;
@@ -68,8 +69,6 @@ export const useEditBucketItemModal: UseEditBucketItemModal = () => {
       deadline: Date;
     }[]
   >([]);
-
-  // チェックボックスが外れてもモーダルからアイテムが消えないように、モーダルが開いたらselected...Items を更新しない
   useEffect(() => {
     if (!isOpenModal) {
       setSelectedBucketItemsInModal(selectedBucketItems);
@@ -78,34 +77,17 @@ export const useEditBucketItemModal: UseEditBucketItemModal = () => {
 
   // やりたいこと削除・達成 ================================================================================
 
-  const db = useSQLiteContext();
   const handleClickEditButton = async () => {
     try {
       // 削除
       if (editType === EditTypeValues.DELETE) {
-        await db.execAsync(
-          `DELETE FROM ${TableValue.BUCKET_ITEMS_TABLE} WHERE uuid IN (${uuids
-            .map((uuid) => `'${uuid}'`)
-            .join(", ")})`,
-        );
-        console.log("やりたいこと削除しました");
+        await deleteBucketItems(drizzleDb, bucketItemIds);
       }
 
       // 達成
       if (editType === EditTypeValues.ACHIEVE) {
-        await db.execAsync(
-          `UPDATE ${TableValue.BUCKET_ITEMS_TABLE} SET status = '${
-            StatusValue.ACHIEVED
-          }' WHERE uuid IN (${uuids.map((uuid) => `'${uuid}'`).join(", ")})`,
-        );
-        console.log("やりたいこと達成しました");
+        await achievedBucketItems(drizzleDb, bucketItemIds);
       }
-
-      // アイテムの再取得 TODO:共通化
-      const bucketItemsRes = (await db.getAllAsync(
-        "SELECT * FROM bucket_items",
-      )) as RawBucketItem[];
-      setBucketItems(bucketItemsRes.map((r) => new BucketItem(r)));
     } catch (e) {
       console.log("ERROR!!!");
       console.log(e);

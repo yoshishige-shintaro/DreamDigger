@@ -1,11 +1,9 @@
-import { categoriesState } from "@/lib/atom/categories";
-import { Category, RawCategory } from "@/lib/types/Category";
-import { TableValue } from "@/lib/utils/table";
+import { editCategoryTitle } from "@/lib/api/category";
+import { drizzleDb } from "@/lib/db/db";
+import { Category } from "@/lib/types/Category";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSQLiteContext } from "expo-sqlite";
 import { useEffect } from "react";
 import { Control, useForm } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
 import z from "zod";
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -27,7 +25,6 @@ type UseEditCategoryModal = (args: { selectedCategory: Category; closeModal: () 
 // hooks 本体 ========================================================================================
 export const useEditCategoryModal: UseEditCategoryModal = (args) => {
   const { selectedCategory, closeModal } = args;
-  const setCategories = useSetRecoilState(categoriesState);
 
   const defaultValues: EditCategoryFormInput = {
     categoryTitle: selectedCategory.title,
@@ -44,23 +41,14 @@ export const useEditCategoryModal: UseEditCategoryModal = (args) => {
     setValue("categoryTitle", selectedCategory.title);
   }, [selectedCategory]);
 
-  const db = useSQLiteContext();
   const handleClickEditButton = async (data: EditCategoryFormInput) => {
     try {
-      await db.execAsync(
-        `UPDATE ${TableValue.CATEGORY_TABLE} SET title = '${data.categoryTitle}' WHERE uuid = '${selectedCategory.id}'`,
-      );
-      const categoriesRes = (await db.getAllAsync(
-        `SELECT * FROM ${TableValue.CATEGORY_TABLE}`,
-      )) as RawCategory[];
-      setCategories(categoriesRes.map((r) => new Category(r)));
+      await editCategoryTitle(drizzleDb, selectedCategory.id, data.categoryTitle);
     } catch (e) {
-      console.log("ERROR!!!");
       console.log(e);
-      return;
+      throw e;
     }
 
-    console.log("カテゴリ名を編集しました");
     reset();
     closeModal();
   };
