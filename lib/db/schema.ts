@@ -1,4 +1,3 @@
-import { StatusValue } from "@/lib/types/BucketItem";
 import { TableValue } from "@/lib/utils/table";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
@@ -8,7 +7,8 @@ export const bucketItemsSchema = sqliteTable(TableValue.BUCKET_ITEMS_TABLE, {
   createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
   deadline: integer("deadline", { mode: "timestamp" }).notNull(),
   achievedAt: integer("achieved_at", { mode: "timestamp" }),
-  status: text("status", { enum: [StatusValue.ACHIEVED, StatusValue.DURING_CHALLENGE] }).notNull(),
+  // TODO: なぜかStatusValue.ACHIEVED , StatusValue.DURING_CHALLENGE が読み込めない
+  status: text("status", { enum: ["achieved", "during_challenge"] }).notNull(),
   categoryId: text("category_id"),
 });
 

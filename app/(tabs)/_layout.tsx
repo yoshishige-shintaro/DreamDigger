@@ -1,8 +1,17 @@
 import Colors, { BASE_COLOR } from "@/constants/Colors";
+import { bucketListItemsState } from "@/lib/atom/bucketListItems";
+import { categoriesState } from "@/lib/atom/categories";
+import { drizzleDb } from "@/lib/db/db";
+import { bucketItemsSchema, categorySchema } from "@/lib/db/schema";
+import { BucketItem } from "@/lib/types/BucketItem";
+import { Category } from "@/lib/types/Category";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { asc } from "drizzle-orm";
+import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { Link, Tabs } from "expo-router";
-import React from "react";
-import { Pressable, Text, useColorScheme } from "react-native";
+import React, { useEffect } from "react";
+import { Pressable, Text } from "react-native";
+import { useSetRecoilState } from "recoil";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -13,12 +22,28 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const setBucketItems = useSetRecoilState(bucketListItemsState);
+
+  const setCategories = useSetRecoilState(categoriesState);
+  const { data: bucketItemsRes } = useLiveQuery(
+    drizzleDb.select().from(bucketItemsSchema).orderBy(asc(bucketItemsSchema.deadline)),
+  );
+  const { data: categoriesRes } = useLiveQuery(drizzleDb.select().from(categorySchema));
+
+  // レイアウトコンポーネントが読み込まれている最中に他のコンポーネントを変更しないように useEffect を使用している
+  useEffect(() => {
+    setBucketItems(bucketItemsRes.map((item) => new BucketItem(item)));
+  }, [bucketItemsRes]);
+  useEffect(() => {
+    setCategories(categoriesRes.map((item) => new Category(item)));
+  }, [categoriesRes]);
+  
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        // TODO: colors 撲滅
+        tabBarActiveTintColor: Colors.light.tint,
         headerStyle: {
           backgroundColor: BASE_COLOR,
         },
@@ -28,7 +53,7 @@ export default function TabLayout() {
           fontWeight: 900,
         },
         tabBarStyle: {
-          backgroundColor: Colors[colorScheme ?? "light"].background,
+          backgroundColor: Colors.light.background,
         },
       }}
     >
@@ -68,6 +93,5 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
-
   );
 }

@@ -1,10 +1,11 @@
+import { addBucketItem } from "@/lib/api/bucketListItem";
 import { bucketListItemsState } from "@/lib/atom/bucketListItems";
-import { BucketItem, RawBucketItem, StatusValue } from "@/lib/types/BucketItem";
+import { drizzleDb } from "@/lib/db/db";
+import { RawBucketItem, StatusValue } from "@/lib/types/BucketItem";
 import { CATEGORY_ALL_ITEM } from "@/lib/types/Category";
 // import { SQLInsertBucketListItem } from "@/lib/utils/db";
 import { createUuid } from "@/lib/utils/uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useRef, useState } from "react";
 import { Control, useForm } from "react-hook-form";
 import { Animated, Dimensions } from "react-native";
@@ -66,21 +67,13 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
     setValue("categoryId", currentCategoryId);
   }, [currentCategoryId]);
 
-  const db = useSQLiteContext();
   const handleClickAddButton = async (data: AddBucketItemFormInput) => {
     try {
-      // await db.execAsync(SQLInsertBucketListItem(buildBody(data)));
-      const bucketItemsRes = (await db.getAllAsync(
-        "SELECT * FROM bucket_items",
-      )) as RawBucketItem[];
-      setBucketItems(bucketItemsRes.map((r) => new BucketItem(r)));
+      await addBucketItem(drizzleDb, data);
     } catch (e) {
-      console.log("ERROR!!!");
       console.log(e);
-      return;
+      throw e;
     }
-
-    console.log("やりたいこと追加しました");
 
     closeModal();
   };

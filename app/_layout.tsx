@@ -1,15 +1,14 @@
 import { BASE_COLOR } from "@/constants/Colors";
-import { DB_NAME, drizzleDb, expoDb } from "@/lib/db/db";
+import { DB_NAME, createInitData, drizzleDb, expoDb } from "@/lib/db/db";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
+import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 import { useFonts } from "expo-font";
 import { ErrorBoundaryProps, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { SQLiteProvider } from "expo-sqlite";
 import { useEffect } from "react";
 import migrations from "../drizzle/migrations";
-import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
-
 
 import { Text, View } from "react-native";
 import "react-native-reanimated";
@@ -27,11 +26,10 @@ export default function RootLayout() {
   useDrizzleStudio(expoDb);
   // Sqlite マイグレーション
   const { success: _, error } = useMigrations(drizzleDb, migrations);
-  useEffect(() => {
-    if (error) {
-      throw error;
-    }
-  });
+
+  if (error) {
+    throw error;
+  }
 
   return <RootLayoutNav />;
 }
@@ -58,7 +56,7 @@ function RootLayoutNav() {
   }
 
   return (
-    <SQLiteProvider databaseName={DB_NAME}>
+    <SQLiteProvider databaseName={DB_NAME} onInit={createInitData}>
       <RecoilRoot>
         <Stack
           screenOptions={{
@@ -76,6 +74,7 @@ function RootLayoutNav() {
   );
 }
 
+// TODO:エラー時の表示をちゃんとする
 export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
   return (
     <View style={{ flex: 1, backgroundColor: "red" }}>

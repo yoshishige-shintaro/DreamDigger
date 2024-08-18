@@ -1,7 +1,10 @@
-export type RawCategory = {
-  uuid: string;
-  title: string;
-};
+import { categorySchema } from "@/lib/db/schema";
+import { createSelectSchema } from "drizzle-zod";
+import { z } from "zod";
+
+// drizzle schema から型を抽出
+const selectCategorySchema = createSelectSchema(categorySchema);
+export type RawCategory = z.infer<typeof selectCategorySchema>;
 
 export class Category {
   id: string;
