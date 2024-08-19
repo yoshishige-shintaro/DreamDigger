@@ -32,3 +32,25 @@ export function convertToLocalDatetime(date: Date) {
 
   return new Date(year, month - 1, day, 0, minutes);
 }
+
+// 過去30日間の日付を取得
+export const getLast30Days = () => {
+  const dates = [];
+  const today = new Date();
+
+  for (let i = 0; i < 30; i++) {
+    const date = new Date();
+    date.setDate(today.getDate() - i);
+    dates.push(date);
+  }
+
+  return dates;
+};
+
+// 日付までの比較
+export const areDatesEqual = (date1: Date, date2: Date) => {
+  const d1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+  const d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+
+  return d1.getTime() === d2.getTime();
+};
