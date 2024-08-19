@@ -69,7 +69,7 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
 
   const handleClickAddButton = async (data: AddBucketItemFormInput) => {
     try {
-      await addBucketItem(drizzleDb, data);
+      await addBucketItem(drizzleDb, buildBody(data));
     } catch (e) {
       console.log(e);
       throw e;

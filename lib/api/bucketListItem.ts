@@ -16,21 +16,7 @@ export const getBucketItems = async (drizzleDb: DrizzleDb): Promise<RawBucketIte
 };
 
 // やりたいこと追加
-export const addBucketItem = async (
-  drizzleDb: DrizzleDb,
-  data: AddBucketItemFormInput,
-): Promise<void> => {
-  const body = {
-    uuid: createUuid(),
-    createdAt: new Date(),
-    deadline: data.deadline,
-    achievedAt: null,
-    categoryId: data.categoryId ?? null,
-    status: StatusValue.DURING_CHALLENGE,
-    title: data.bucketItemTitle,
-  };
-  console.log("INSERT");
-
+export const addBucketItem = async (drizzleDb: DrizzleDb, body: RawBucketItem): Promise<void> => {
   await drizzleDb.insert(bucketItemsSchema).values(body);
 };
 
@@ -60,6 +46,6 @@ export const deleteBucketItems = async (drizzleDb: DrizzleDb, bucketItemIds: str
 export const achievedBucketItems = async (drizzleDb: DrizzleDb, bucketItemIds: string[]) => {
   await drizzleDb
     .update(bucketItemsSchema)
-    .set({ status: StatusValue.ACHIEVED })
+    .set({ status: StatusValue.ACHIEVED, achievedAt: new Date() })
     .where(inArray(bucketItemsSchema.uuid, bucketItemIds));
 };

@@ -10,9 +10,11 @@ import { SQLiteProvider } from "expo-sqlite";
 import { useEffect } from "react";
 import migrations from "../drizzle/migrations";
 
-import { Text, View } from "react-native";
+import { LogBox, Text, View } from "react-native";
 import "react-native-reanimated";
 import { RecoilRoot } from "recoil";
+
+LogBox.ignoreLogs(["Require cycle: node_modules/victory"]);
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
