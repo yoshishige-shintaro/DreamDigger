@@ -36,10 +36,8 @@ export default function DiggingScreen() {
         }}
         // SCREEN の wrapper のスタイル
         sceneContainerStyle={{
-          flex: 1,
-          flexDirection: "row",
-          justifyContent: "center",
-          backgroundColor: "#f3f4f6a",
+          paddingHorizontal: 12,
+          alignItems: "center",
         }}
       >
         {[CATEGORY_ALL_ITEM, ...categories].map((category, index) => (

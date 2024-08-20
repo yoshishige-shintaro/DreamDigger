@@ -16,7 +16,11 @@ import z from "zod";
 // schema 定義
 
 const schema = z.object({
-  bucketItemTitle: z.string().trim().min(1, { message: "やりたいことを入力してください" }),
+  bucketItemTitle: z
+    .string()
+    .trim()
+    .min(1, { message: "やりたいことを入力してください" })
+    .max(40, { message: "40文字以下で入力してください" }),
   categoryId: z.string().optional(),
   deadline: z.date().refine((date) => date > new Date(), {
     message: "未来の日時を設定してください",

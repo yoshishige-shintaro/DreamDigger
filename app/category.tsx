@@ -79,7 +79,9 @@ export default function CategoryScreen() {
                 {({ pressed }) => (
                   <View className={`flex-row gap-2 ${pressed ? "opacity-50" : ""}`}>
                     <Feather name="edit-2" size={24} color="black" />
-                    <Text className="text-base">{category.title}</Text>
+                    <Text numberOfLines={1} className="text-base  w-[75%]">
+                      {category.title}
+                    </Text>
                   </View>
                 )}
               </Pressable>

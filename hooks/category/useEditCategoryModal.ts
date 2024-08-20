@@ -10,7 +10,11 @@ import z from "zod";
 // schema 定義
 
 const schema = z.object({
-  categoryTitle: z.string().trim().min(1, { message: "カテゴリ名を入力してください" }),
+  categoryTitle: z
+    .string()
+    .trim()
+    .min(1, { message: "カテゴリ名を入力してください" })
+    .max(25, { message: "25文字以下で入力してください" }),
 });
 
 // schema から型を抽出

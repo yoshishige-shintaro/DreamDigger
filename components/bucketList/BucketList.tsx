@@ -17,7 +17,7 @@ const BucketList = (props: BucketListProps): JSX.Element => {
       <Text className="text-base text-gray-500">やりたいことが登録されていません</Text>
     </View> // TODO: 画面全体がスクロールされるように修正
   ) : (
-    <View className="grow-0.8 mt-12">
+    <View className="mt-12">
       <FlatList
         // 締め切り期限までの残り時間（降順）
         data={bucketItems}

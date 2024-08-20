@@ -22,7 +22,7 @@ const BucketListItem = (props: BucketListItemProps): JSX.Element => {
         shadowRadius: 4,
         shadowOffset: { width: 0, height: 4 },
       }}
-      className="flex-row justify-between items-center bg-white h-16 p-4 rounded-md mb-1"
+      className="flex-row justify-between items-center bg-white h-16 p-4 rounded-md mb-1 w-full"
     >
       <CheckBox
         isChecked={isChecked}
@@ -30,7 +30,10 @@ const BucketListItem = (props: BucketListItemProps): JSX.Element => {
         checkBoxColor="#ccc"
         checkedCheckBoxColor={TINT_COLOR}
         rightTextView={
-          <Text className={`text-base ml-1 ${isChecked ? "line-through text-[#ccc]" : ""}`}>
+          <Text
+            numberOfLines={1}
+            className={`text-base w-[75%] ml-1 ${isChecked ? "line-through text-[#ccc]" : ""}`}
+          >
             {title}
           </Text>
         }
