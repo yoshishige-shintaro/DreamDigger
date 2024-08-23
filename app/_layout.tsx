@@ -1,15 +1,15 @@
-import { BASE_COLOR } from "@/constants/Colors";
 import { DB_NAME, createInitData, drizzleDb, expoDb } from "@/lib/db/db";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 import { useFonts } from "expo-font";
-import { ErrorBoundaryProps, Stack } from "expo-router";
+import { ErrorBoundaryProps } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { SQLiteProvider } from "expo-sqlite";
 import { useEffect } from "react";
 import migrations from "../drizzle/migrations";
 
+import Walkthrough from "@/components/walkthrough/Walkthrough";
 import { LogBox, Text, View } from "react-native";
 import "react-native-reanimated";
 import { RecoilRoot } from "recoil";
@@ -60,7 +60,8 @@ function RootLayoutNav() {
   return (
     <SQLiteProvider databaseName={DB_NAME} onInit={createInitData}>
       <RecoilRoot>
-        <Stack
+        <Walkthrough />
+        {/* <Stack
           screenOptions={{
             headerStyle: { backgroundColor: BASE_COLOR },
             headerTitleStyle: {
@@ -70,7 +71,7 @@ function RootLayoutNav() {
         >
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="category" />
-        </Stack>
+        </Stack> */}
       </RecoilRoot>
     </SQLiteProvider>
   );

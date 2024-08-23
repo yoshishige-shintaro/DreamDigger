@@ -1,5 +1,4 @@
 import { addBucketItem } from "@/lib/api/bucketListItem";
-import { bucketListItemsState } from "@/lib/atom/bucketListItems";
 import { drizzleDb } from "@/lib/db/db";
 import { RawBucketItem, StatusValue } from "@/lib/types/BucketItem";
 import { CATEGORY_ALL_ITEM } from "@/lib/types/Category";
@@ -9,7 +8,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
 import { Control, useForm } from "react-hook-form";
 import { Animated, Dimensions } from "react-native";
-import { useSetRecoilState } from "recoil";
 import z from "zod";
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +51,6 @@ type UseAddBucketItemModal = (args: { currentCategoryId: string }) => {
 export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
   const { currentCategoryId } = args;
 
-  const setBucketItems = useSetRecoilState(bucketListItemsState);
   const defaultValues: AddBucketItemFormInput = {
     bucketItemTitle: "",
     categoryId: currentCategoryId === CATEGORY_ALL_ITEM.id ? undefined : currentCategoryId,
