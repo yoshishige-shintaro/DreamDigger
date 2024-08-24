@@ -92,10 +92,10 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
     }).start(() => {
       setIsOpenModal(false);
       setValue("bucketItemTitle", "");
-      setValue("deadline", new Date());
     });
   };
   const openModal = () => {
+    setValue("deadline", new Date());
     setIsOpenModal(true);
     // モーダルを表示するアニメーション
     Animated.timing(slideAnim, {

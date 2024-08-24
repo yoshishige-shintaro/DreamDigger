@@ -3,13 +3,13 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 import { useFonts } from "expo-font";
-import { ErrorBoundaryProps } from "expo-router";
+import { ErrorBoundaryProps, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { SQLiteProvider } from "expo-sqlite";
 import { useEffect } from "react";
 import migrations from "../drizzle/migrations";
 
-import Walkthrough from "@/components/walkthrough/Walkthrough";
+import { BASE_COLOR } from "@/constants/Colors";
 import { LogBox, Text, View } from "react-native";
 import "react-native-reanimated";
 import { RecoilRoot } from "recoil";
@@ -53,6 +53,7 @@ function RootLayoutNav() {
     }
   }, [loaded]);
 
+  // TOdO:スプラッシュページが表示される仕組みを調べる
   if (!loaded) {
     return null;
   }
@@ -60,8 +61,7 @@ function RootLayoutNav() {
   return (
     <SQLiteProvider databaseName={DB_NAME} onInit={createInitData}>
       <RecoilRoot>
-        <Walkthrough />
-        {/* <Stack
+        <Stack
           screenOptions={{
             headerStyle: { backgroundColor: BASE_COLOR },
             headerTitleStyle: {
@@ -71,7 +71,8 @@ function RootLayoutNav() {
         >
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="category" />
-        </Stack> */}
+        </Stack>
+
       </RecoilRoot>
     </SQLiteProvider>
   );

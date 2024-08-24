@@ -3,17 +3,36 @@ import LazingIcon from "@/components/walkthrough/icon/LazingIcon";
 import StackingBoxesIcon from "@/components/walkthrough/icon/StackingBoxesIcon";
 import { TINT_COLOR } from "@/constants/Colors";
 import React, { useEffect, useRef } from "react";
-import { Animated, Dimensions, Text, View } from "react-native";
+import { Animated, Button, Dimensions, Text } from "react-native";
 import { SwiperFlatList } from "react-native-swiper-flatlist";
 
 const { width, height } = Dimensions.get("window");
 const baseStyle = { width, height };
 
-const Walkthrough = (): JSX.Element => {
+type WalkthroughProps = {
+  setIsOpenWalkthrough: React.Dispatch<React.SetStateAction<boolean>>;
+};
+const Walkthrough = (props: WalkthroughProps): JSX.Element => {
+  const { setIsOpenWalkthrough } = props;
   const [currentIndex, setCurrentIndex] = React.useState(0);
 
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+
+  const handleClickNextBtn = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 500,
+      useNativeDriver: true,
+    }).start(() => {
+      setIsOpenWalkthrough(false);
+    });
+  };
+
   return (
-    <View className="flex-1">
+    <Animated.View
+      className="flex-1 z-10 absolute top-0 left-0 bg-white"
+      style={{ opacity: fadeAnim }}
+    >
       <SwiperFlatList
         showPagination
         paginationStyle={{ paddingBottom: 80 }}
@@ -27,12 +46,13 @@ const Walkthrough = (): JSX.Element => {
           <Text className="mt-4"> 一日中ダラダラ過ごしてしまった...</Text>
           <Text className="mt-4"> SNSを見てたら1日が終わった...</Text>
           <Text className="mt-4"> そんな経験はないでしょうか？</Text>
+          <Button title="次へ" onPress={handleClickNextBtn} />
         </AnimatedView>
         <AnimatedView triggerAnimation={currentIndex === 1}>
           <StackingBoxesIcon size={128} />
           <Text className="mt-12">このアプリを使用すれば</Text>
           <Text className="mt-4">小さいやりたいことを積み重ねることで</Text>
-          <Text className="mt-4">自分の中にあるやりたいことを発見できるようなります</Text>
+          <Text className="mt-4">自分がやりたいことを発見できるようなります</Text>
         </AnimatedView>
         <AnimatedView triggerAnimation={currentIndex === 2}>
           <DiggingIcon size={128} />
@@ -41,7 +61,7 @@ const Walkthrough = (): JSX.Element => {
           <Text className="mt-4">わっしょい！わっしょい！</Text>
         </AnimatedView>
       </SwiperFlatList>
-    </View>
+    </Animated.View>
   );
 };
 
@@ -77,7 +97,7 @@ const AnimatedView = ({
 
   return (
     <Animated.View
-      className="items-center mt-[50%]"
+      className="items-center mt-[60%]"
       style={[
         {
           opacity: fadeAnim,

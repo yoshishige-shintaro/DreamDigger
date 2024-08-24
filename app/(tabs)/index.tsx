@@ -1,6 +1,7 @@
 import AddBucketListItemModal from "@/components/bucketList/AddBucketListItemModal";
 import BucketList from "@/components/bucketList/BucketList";
 import EditBucketListItemModal from "@/components/bucketList/EditBucketListItemModal";
+import Walkthrough from "@/components/walkthrough/Walkthrough";
 import Colors from "@/constants/Colors";
 import { useDiggingScreen } from "@/hooks/bucketList/useDiggingScreen";
 import { CATEGORY_ALL_ITEM } from "@/lib/types/Category";

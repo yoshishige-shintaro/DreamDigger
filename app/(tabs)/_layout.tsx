@@ -1,3 +1,4 @@
+import Walkthrough from "@/components/walkthrough/Walkthrough";
 import Colors, { BASE_COLOR } from "@/constants/Colors";
 import { bucketListItemsState } from "@/lib/atom/bucketListItems";
 import { categoriesState } from "@/lib/atom/categories";
@@ -9,7 +10,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { asc } from "drizzle-orm";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { Link, Tabs } from "expo-router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable, Text } from "react-native";
 import { useSetRecoilState } from "recoil";
 
@@ -20,6 +21,7 @@ function TabBarIcon(props: {
 }) {
   return <MaterialCommunityIcons size={28} style={{ marginBottom: -3 }} {...props} />;
 }
+// isOpenWalkthrough で管理する。初期値はtrue 初回だったらfalseにする処理をuseeffectに入れる
 
 export default function TabLayout() {
   const setBucketItems = useSetRecoilState(bucketListItemsState);
@@ -30,6 +32,8 @@ export default function TabLayout() {
   );
   const { data: categoriesRes } = useLiveQuery(drizzleDb.select().from(categorySchema));
 
+  const [isOpenWalkthrough, setIsOpenWalkthrough] = useState(true);
+
   // レイアウトコンポーネントが読み込まれている最中に他のコンポーネントを変更しないように useEffect を使用している
   useEffect(() => {
     setBucketItems(bucketItemsRes.map((item) => new BucketItem(item)));
@@ -37,61 +41,63 @@ export default function TabLayout() {
   useEffect(() => {
     setCategories(categoriesRes.map((item) => new Category(item)));
   }, [categoriesRes]);
-  
 
   return (
-    <Tabs
-      screenOptions={{
-        // TODO: colors 撲滅
-        tabBarActiveTintColor: Colors.light.tint,
-        headerStyle: {
-          backgroundColor: BASE_COLOR,
-        },
-        headerTitleStyle: {
-          color: "#fff",
-          fontSize: 18,
-          fontWeight: 900,
-        },
-        tabBarStyle: {
-          backgroundColor: Colors.light.background,
-        },
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "発掘する",
-          tabBarIcon: ({ color }) => <TabBarIcon name="pickaxe" color={color} />,
-          headerRight: () => (
-            <Link href="/category" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <Text
-                    className="text-white font-bold"
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  >
-                    カテゴリ管理
-                  </Text>
-                )}
-              </Pressable>
-            </Link>
-          ),
+    <>
+      {isOpenWalkthrough && <Walkthrough setIsOpenWalkthrough={setIsOpenWalkthrough} />}
+      <Tabs
+        screenOptions={{
+          // TODO: colors 撲滅
+          tabBarActiveTintColor: Colors.light.tint,
+          headerStyle: {
+            backgroundColor: BASE_COLOR,
+          },
+          headerTitleStyle: {
+            color: "#fff",
+            fontSize: 18,
+            fontWeight: 900,
+          },
+          tabBarStyle: {
+            backgroundColor: Colors.light.background,
+          },
         }}
-      />
-      <Tabs.Screen
-        name="status"
-        options={{
-          title: "ステータス",
-          tabBarIcon: ({ color }) => <TabBarIcon name="account" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="history"
-        options={{
-          title: "発掘履歴",
-          tabBarIcon: ({ color }) => <TabBarIcon name="history" color={color} />,
-        }}
-      />
-    </Tabs>
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: "発掘する",
+            tabBarIcon: ({ color }) => <TabBarIcon name="pickaxe" color={color} />,
+            headerRight: () => (
+              <Link href="/category" asChild>
+                <Pressable>
+                  {({ pressed }) => (
+                    <Text
+                      className="text-white font-bold"
+                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    >
+                      カテゴリ管理
+                    </Text>
+                  )}
+                </Pressable>
+              </Link>
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="status"
+          options={{
+            title: "ステータス",
+            tabBarIcon: ({ color }) => <TabBarIcon name="account" color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="history"
+          options={{
+            title: "発掘履歴",
+            tabBarIcon: ({ color }) => <TabBarIcon name="history" color={color} />,
+          }}
+        />
+      </Tabs>
+    </>
   );
 }
