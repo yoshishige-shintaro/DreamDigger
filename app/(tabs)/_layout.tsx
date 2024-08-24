@@ -27,6 +27,7 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
+  // TODO:フックにロジックを切り出す
   const setBucketItems = useSetRecoilState(bucketListItemsState);
 
   const setCategories = useSetRecoilState(categoriesState);
