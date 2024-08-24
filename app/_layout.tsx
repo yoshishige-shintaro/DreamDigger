@@ -47,13 +47,6 @@ function RootLayoutNav() {
     if (error) throw error;
   }, [error]);
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  // TOdO:スプラッシュページが表示される仕組みを調べる
   if (!loaded) {
     return null;
   }
@@ -72,7 +65,6 @@ function RootLayoutNav() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="category" />
         </Stack>
-
       </RecoilRoot>
     </SQLiteProvider>
   );

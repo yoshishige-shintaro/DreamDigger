@@ -30,6 +30,7 @@ const BucketListItem = (props: BucketListItemProps): JSX.Element => {
         checkBoxColor="#ccc"
         checkedCheckBoxColor={TINT_COLOR}
         rightTextView={
+          // TODO:やりたいことが長い場合は折り返す。二行まで許容 or スクロールできるようにする
           <Text
             numberOfLines={1}
             className={`text-base w-[75%] ml-1 ${isChecked ? "line-through text-[#ccc]" : ""}`}

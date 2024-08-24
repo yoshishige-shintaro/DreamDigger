@@ -2,15 +2,16 @@ import DiggingIcon from "@/components/walkthrough/icon/DiggingIcon";
 import LazingIcon from "@/components/walkthrough/icon/LazingIcon";
 import StackingBoxesIcon from "@/components/walkthrough/icon/StackingBoxesIcon";
 import { TINT_COLOR } from "@/constants/Colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useRef } from "react";
-import { Animated, Button, Dimensions, Text } from "react-native";
+import { Animated, Button, Dimensions, Text, View } from "react-native";
 import { SwiperFlatList } from "react-native-swiper-flatlist";
 
 const { width, height } = Dimensions.get("window");
 const baseStyle = { width, height };
 
 type WalkthroughProps = {
-  setIsOpenWalkthrough: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenWalkthrough: React.Dispatch<React.SetStateAction<boolean | null>>;
 };
 const Walkthrough = (props: WalkthroughProps): JSX.Element => {
   const { setIsOpenWalkthrough } = props;
@@ -25,6 +26,7 @@ const Walkthrough = (props: WalkthroughProps): JSX.Element => {
       useNativeDriver: true,
     }).start(() => {
       setIsOpenWalkthrough(false);
+      void AsyncStorage.setItem("isFirstVisit", JSON.stringify(false));
     });
   };
 
@@ -46,7 +48,6 @@ const Walkthrough = (props: WalkthroughProps): JSX.Element => {
           <Text className="mt-4"> 一日中ダラダラ過ごしてしまった...</Text>
           <Text className="mt-4"> SNSを見てたら1日が終わった...</Text>
           <Text className="mt-4"> そんな経験はないでしょうか？</Text>
-          <Button title="次へ" onPress={handleClickNextBtn} />
         </AnimatedView>
         <AnimatedView triggerAnimation={currentIndex === 1}>
           <StackingBoxesIcon size={128} />
@@ -59,6 +60,9 @@ const Walkthrough = (props: WalkthroughProps): JSX.Element => {
           <Text className="mt-12">やりたいことはあなたの中に埋まっています</Text>
           <Text className="mt-4">やりたいことを発掘しにいきましょう！</Text>
           <Text className="mt-4">わっしょい！わっしょい！</Text>
+          <View className="mt-8">
+            <Button title="すすむ" onPress={handleClickNextBtn} />
+          </View>
         </AnimatedView>
       </SwiperFlatList>
     </Animated.View>

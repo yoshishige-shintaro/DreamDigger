@@ -7,12 +7,16 @@ import { bucketItemsSchema, categorySchema } from "@/lib/db/schema";
 import { BucketItem } from "@/lib/types/BucketItem";
 import { Category } from "@/lib/types/Category";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { asc } from "drizzle-orm";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { Link, Tabs } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect, useState } from "react";
 import { Pressable, Text } from "react-native";
 import { useSetRecoilState } from "recoil";
+
+SplashScreen.preventAutoHideAsync(); // スプラッシュスクリーンを自動的に隠さないようにする
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -21,7 +25,6 @@ function TabBarIcon(props: {
 }) {
   return <MaterialCommunityIcons size={28} style={{ marginBottom: -3 }} {...props} />;
 }
-// isOpenWalkthrough で管理する。初期値はtrue 初回だったらfalseにする処理をuseeffectに入れる
 
 export default function TabLayout() {
   const setBucketItems = useSetRecoilState(bucketListItemsState);
@@ -32,7 +35,7 @@ export default function TabLayout() {
   );
   const { data: categoriesRes } = useLiveQuery(drizzleDb.select().from(categorySchema));
 
-  const [isOpenWalkthrough, setIsOpenWalkthrough] = useState(true);
+  const [isOpenWalkthrough, setIsOpenWalkthrough] = useState<boolean | null>(null);
 
   // レイアウトコンポーネントが読み込まれている最中に他のコンポーネントを変更しないように useEffect を使用している
   useEffect(() => {
@@ -41,6 +44,33 @@ export default function TabLayout() {
   useEffect(() => {
     setCategories(categoriesRes.map((item) => new Category(item)));
   }, [categoriesRes]);
+
+  useEffect(() => {
+    const checkFirstVisit = async () => {
+      try {
+        const isFirstVisitString = await AsyncStorage.getItem("isFirstVisit");
+        const isFirstVisit = isFirstVisitString
+          ? (JSON.parse(isFirstVisitString) as boolean)
+          : true;
+        if (isFirstVisit) {
+          setIsOpenWalkthrough(true);
+        } else {
+          setIsOpenWalkthrough(false);
+        }
+      } catch (error) {
+        console.error("Error retrieving data from asyncStorage:", error);
+        throw error;
+      } finally {
+        await SplashScreen.hideAsync(); // データの取得が完了したらスプラッシュスクリーンを隠す
+      }
+    };
+
+    checkFirstVisit();
+  }, []);
+
+  if (isOpenWalkthrough === null) {
+    return null;
+  }
 
   return (
     <>
