@@ -22,23 +22,22 @@ const BucketListItem = (props: BucketListItemProps): JSX.Element => {
         shadowRadius: 4,
         shadowOffset: { width: 0, height: 4 },
       }}
-      className="flex-row justify-between items-center bg-white h-16 p-4 rounded-md mb-1 w-full"
+      className="flex-row justify-between items-center bg-white h-auto p-4 rounded-md mb-1 w-full"
     >
-      <CheckBox
-        isChecked={isChecked}
-        onClick={onClickCheckBox}
-        checkBoxColor="#ccc"
-        checkedCheckBoxColor={TINT_COLOR}
-        rightTextView={
-          // TODO:やりたいことが長い場合は折り返す。二行まで許容 or スクロールできるようにする
-          <Text
-            numberOfLines={1}
-            className={`text-base w-[75%] ml-1 ${isChecked ? "line-through text-[#ccc]" : ""}`}
-          >
+      <View className="flex-row items-center">
+        <CheckBox
+          isChecked={isChecked}
+          onClick={onClickCheckBox}
+          checkBoxColor="#ccc"
+          checkedCheckBoxColor={TINT_COLOR}
+        />
+        <View className="ml-2">
+          <Text className={`text-base w-60 ${isChecked ? "line-through text-[#ccc]" : ""}`}>
             {title}
           </Text>
-        }
-      />
+        </View>
+      </View>
+
       {/* 期限までの残り時間 */}
       <Text className={`text-base ${isExpiredDeadline ? "text-rose-500" : ""}`}>
         {displayTimeToDeadLine(timeToDeadline)}

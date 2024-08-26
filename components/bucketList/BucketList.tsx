@@ -10,17 +10,17 @@ type BucketListProps = {
 const BucketList = (props: BucketListProps): JSX.Element => {
   const { bucketItems } = props;
 
-  // TODO:ちらつきを治す。_layout でデータを取得するようにするか、データの初期状態を null にしてハンドリングする。前者の方が良さそう
   return bucketItems.length === 0 ? (
     <View className="flex-1 justify-center items-center gap-4">
       <FontAwesome6 name="person-digging" size={72} color="gray" />
       <Text className="text-base text-gray-500">やりたいことが登録されていません</Text>
     </View> // TODO: 画面全体がスクロールされるように修正
   ) : (
-    <View className="mt-12">
+    <View>
       <FlatList
         // 締め切り期限までの残り時間（降順）
         data={bucketItems}
+        contentContainerStyle={{ paddingTop: 48, paddingBottom: 175 }}
         renderItem={({ item: bucketItem }) => {
           return (
             <BucketListItem

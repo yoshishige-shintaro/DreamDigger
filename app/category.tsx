@@ -69,7 +69,7 @@ export default function CategoryScreen() {
                 shadowRadius: 4,
                 shadowOffset: { width: 0, height: 4 },
               }}
-              className="flex-row justify-between items-center bg-white h-16 p-4 rounded-md mb-1"
+              className="flex-row justify-between items-center bg-white h-auto p-4 rounded-md mb-1"
             >
               <Pressable
                 onPress={() => {
@@ -77,9 +77,9 @@ export default function CategoryScreen() {
                 }}
               >
                 {({ pressed }) => (
-                  <View className={`flex-row gap-2 ${pressed ? "opacity-50" : ""}`}>
+                  <View className={`flex-row gap-2 items-center ${pressed ? "opacity-50" : ""}`}>
                     <Feather name="edit-2" size={24} color="black" />
-                    <Text numberOfLines={1} className="text-base  w-[75%]">
+                    <Text className="text-base  w-72">
                       {category.title}
                     </Text>
                   </View>

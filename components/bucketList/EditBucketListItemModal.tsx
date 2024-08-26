@@ -39,7 +39,7 @@ const EditBucketListItemModal = () => {
                 <Text className="text-lg font-bold">やりたいこと達成</Text>
               )}
             </View>
-            <View>
+            <View className="max-h-[70%]">
               <FlatList
                 data={selectedBucketItemsInModal}
                 renderItem={({ item }) => {
