@@ -1,19 +1,27 @@
 {
   "expo": {
-    "name": "DreamDigger",
+    "name": "やりたいこと発掘アプリ",
+    "description": "自分のやりたいことを発掘することができるアプリ",
     "slug": "DreamDigger",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/app-icon.png",
     "scheme": "DreamDigger",
     "userInterfaceStyle": "automatic",
+    "platforms": [
+      "ios"
+    ],
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "DreamDigger"
+    },
+    "notification": {
+      "icon": "./assets/images/app-icon.png"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,6 +39,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "ea69567c-2c1b-4f0e-92fb-4960040d6611"
+      }
     }
   }
 }
