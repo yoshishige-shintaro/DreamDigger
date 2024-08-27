@@ -2,14 +2,14 @@ import { DB_NAME, createInitData, drizzleDb } from "@/lib/db/db";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useFonts } from "expo-font";
-import { ErrorBoundaryProps, Stack } from "expo-router";
+import { ErrorBoundaryProps, Link, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { SQLiteProvider } from "expo-sqlite";
 import { useEffect } from "react";
 import migrations from "../drizzle/migrations";
 
 import { BASE_COLOR } from "@/constants/Colors";
-import { Button, LogBox, Text, View } from "react-native";
+import { Button, LogBox, Pressable, Text, View } from "react-native";
 import "react-native-reanimated";
 import { RecoilRoot } from "recoil";
 
@@ -57,6 +57,25 @@ function RootLayoutNav() {
         >
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="category" />
+          <Stack.Screen
+            name="usage"
+            options={{
+              gestureDirection: "vertical",
+              headerTitle: "使い方",
+              headerLeft: () => <View />,
+              headerRight: () => (
+                <Link href="/(tabs)/" asChild>
+                  <Pressable>
+                    {({ pressed }) => (
+                      <View className="flex-row bg-sky-200" style={{ opacity: pressed ? 0.5 : 1 }}>
+                        <Text className="text-white font-bold text-base ">閉じる</Text>
+                      </View>
+                    )}
+                  </Pressable>
+                </Link>
+              ),
+            }}
+          />
         </Stack>
       </RecoilRoot>
     </SQLiteProvider>

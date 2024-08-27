@@ -112,6 +112,20 @@ export default function TabLayout() {
                 </Pressable>
               </Link>
             ),
+            headerLeft: () => (
+              <Link href="/usage" asChild>
+                <Pressable>
+                  {({ pressed }) => (
+                    <Text
+                      className="text-white font-bold"
+                      style={{ marginLeft: 15, opacity: pressed ? 0.5 : 1 }}
+                    >
+                      使い方
+                    </Text>
+                  )}
+                </Pressable>
+              </Link>
+            ),
           }}
         />
         <Tabs.Screen
