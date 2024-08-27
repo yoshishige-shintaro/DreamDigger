@@ -1,7 +1,6 @@
-import { DB_NAME, createInitData, drizzleDb, expoDb } from "@/lib/db/db";
+import { DB_NAME, createInitData, drizzleDb } from "@/lib/db/db";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
-import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 import { useFonts } from "expo-font";
 import { ErrorBoundaryProps, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -20,7 +19,6 @@ LogBox.ignoreLogs(["Require cycle: node_modules/victory"]);
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  useDrizzleStudio(expoDb);
   // Sqlite マイグレーション
   const { success: _, error } = useMigrations(drizzleDb, migrations);
 
