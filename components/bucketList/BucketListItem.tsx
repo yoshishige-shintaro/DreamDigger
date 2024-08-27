@@ -1,6 +1,6 @@
 import { TINT_COLOR } from "@/constants/Colors";
 import { ElapsedTimeObj, useBucketListItem } from "@/hooks/bucketList/useBucketListItem";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import CheckBox from "react-native-check-box";
 
 type BucketListItemProps = {
@@ -34,9 +34,11 @@ const BucketListItem = (props: BucketListItemProps): JSX.Element => {
           checkedCheckBoxColor={TINT_COLOR}
         />
         <View className="ml-2">
-          <Text className={`text-base w-60 ${isChecked ? "line-through text-[#ccc]" : ""}`}>
-            {title}
-          </Text>
+          <Pressable onPress={onClickCheckBox}>
+            <Text className={`text-base w-60 ${isChecked ? "line-through text-[#ccc]" : ""}`}>
+              {title}
+            </Text>
+          </Pressable>
         </View>
       </View>
 
