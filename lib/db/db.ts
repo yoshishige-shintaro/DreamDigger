@@ -1,7 +1,7 @@
 import { AddBucketItemFormInput } from "@/hooks/bucketList/useAddBucketItemModal";
 import { addBucketItems } from "@/lib/api/bucketListItem";
 import { addCategory } from "@/lib/api/category";
-import { bucketItemsSchema, categorySchema } from "@/lib/db/schema";
+import { categorySchema } from "@/lib/db/schema";
 import { createUuid } from "@/lib/utils/uuid";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import { SQLiteDatabase, openDatabaseSync } from "expo-sqlite";
@@ -41,6 +41,11 @@ export const createInitData = async (db: SQLiteDatabase): Promise<void> => {
 
   const tutorialBucketItems: AddBucketItemFormInput[] = [
     {
+      bucketItemTitle: "「使い方」を見る",
+      deadline: createDeadline(15),
+      categoryId: tutorialCategoryId,
+    },
+    {
       bucketItemTitle: "やりたいことを追加する",
       deadline: createDeadline(15),
       categoryId: tutorialCategoryId,
@@ -48,16 +53,6 @@ export const createInitData = async (db: SQLiteDatabase): Promise<void> => {
     {
       bucketItemTitle: "追加したやりたいことを達成する",
       deadline: createDeadline(30),
-      categoryId: tutorialCategoryId,
-    },
-    {
-      bucketItemTitle: "カテゴリを追加する",
-      deadline: createDeadline(45),
-      categoryId: tutorialCategoryId,
-    },
-    {
-      bucketItemTitle: "「チュートリアル」カテゴリを削除する",
-      deadline: createDeadline(60),
       categoryId: tutorialCategoryId,
     },
   ];
