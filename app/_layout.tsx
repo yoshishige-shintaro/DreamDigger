@@ -68,9 +68,14 @@ function RootLayoutNav() {
 export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
   return (
     <View className="bg-white flex-1 flex-row items-center justify-center">
-      <View className="w-[80%] bg-red-300 border border-red-800 rounded-lg h-28 p-4">
-        <Text className="mb-2">エラーが発生しました。下記のボタンから再読み込みをお試しください。</Text>
+      <View className="w-[80%] bg-red-300 border border-red-800 rounded-lg h-auto p-4">
+        <Text className="mb-2">
+          エラーが発生しました。下記のボタンから再読み込みをお試しください。
+        </Text>
         <Button onPress={retry} title="再読み込み" />
+        <Text>{error.name}</Text>
+        <Text>{error.message}</Text>
+        <Text>{error.cause ? JSON.stringify(error.cause) : ""}</Text>
       </View>
     </View>
   );
