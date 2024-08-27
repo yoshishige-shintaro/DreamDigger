@@ -29,7 +29,7 @@ const EditBucketListItemModal = () => {
             className="absolute top-0 left-0 w-screen h-full bg-black opacity-20"
           />
           <Animated.View
-            className={`flex-1 mx-4  bg-gray-100 rounded-xl py-8 px-8`}
+            className={`flex-1 mx-4  bg-gray-100 rounded-xl py-8 px-4`}
             style={[{ transform: [{ translateY: slideAnim }] }]}
           >
             <View className="items-center justify-center mb-8">
@@ -49,6 +49,7 @@ const EditBucketListItemModal = () => {
                       id={item.id}
                       title={item.title}
                       deadline={item.deadline}
+                      isEdit
                     />
                   );
                 }}

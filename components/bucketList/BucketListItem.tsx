@@ -7,10 +7,12 @@ type BucketListItemProps = {
   id: string;
   title: string;
   deadline: Date;
+  // きしょいけど
+  isEdit?: boolean;
 };
 
 const BucketListItem = (props: BucketListItemProps): JSX.Element => {
-  const { title } = props;
+  const { title, isEdit = false } = props;
   const { timeToDeadline, isExpiredDeadline, isChecked, onClickCheckBox } =
     useBucketListItem(props);
 
@@ -39,9 +41,11 @@ const BucketListItem = (props: BucketListItemProps): JSX.Element => {
       </View>
 
       {/* 期限までの残り時間 */}
-      <Text className={`text-base ${isExpiredDeadline ? "text-rose-500" : ""}`}>
-        {displayTimeToDeadLine(timeToDeadline)}
-      </Text>
+      {!isEdit && (
+        <Text className={`text-base ${isExpiredDeadline ? "text-rose-500" : ""}`}>
+          {displayTimeToDeadLine(timeToDeadline)}
+        </Text>
+      )}
     </View>
   );
 };
