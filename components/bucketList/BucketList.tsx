@@ -14,7 +14,7 @@ const BucketList = (props: BucketListProps): JSX.Element => {
     <View className="flex-1 justify-center items-center gap-4">
       <FontAwesome6 name="person-digging" size={72} color="gray" />
       <Text className="text-base text-gray-500">やりたいことが登録されていません</Text>
-    </View> // TODO: 画面全体がスクロールされるように修正
+    </View>
   ) : (
     <View>
       <FlatList

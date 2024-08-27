@@ -10,18 +10,13 @@ import { useEffect } from "react";
 import migrations from "../drizzle/migrations";
 
 import { BASE_COLOR } from "@/constants/Colors";
-import { LogBox, Text, View } from "react-native";
+import { Button, LogBox, Text, View } from "react-native";
 import "react-native-reanimated";
 import { RecoilRoot } from "recoil";
 
 LogBox.ignoreLogs(["Require cycle: node_modules/victory"]);
 
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
-};
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+// スプラッシュ画面が自動で閉じるのを止める
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -70,12 +65,13 @@ function RootLayoutNav() {
   );
 }
 
-// TODO:エラー時の表示をちゃんとする
 export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
   return (
-    <View style={{ flex: 1, backgroundColor: "red" }}>
-      <Text>{error.message}</Text>
-      <Text onPress={retry}>再読み込み</Text>
+    <View className="bg-white flex-1 flex-row items-center justify-center">
+      <View className="w-[80%] bg-red-300 border border-red-800 rounded-lg h-28 p-4">
+        <Text className="mb-2">エラーが発生しました。下記のボタンから再読み込みをお試しください。</Text>
+        <Button onPress={retry} title="再読み込み" />
+      </View>
     </View>
   );
 }
