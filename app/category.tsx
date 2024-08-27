@@ -79,7 +79,7 @@ export default function CategoryScreen() {
                 {({ pressed }) => (
                   <View className={`flex-row gap-2 items-center ${pressed ? "opacity-50" : ""}`}>
                     <Feather name="edit-2" size={24} color="black" />
-                    <Text className="text-base  w-72">
+                    <Text className="text-base  w-[80%]">
                       {category.title}
                     </Text>
                   </View>
