@@ -1,9 +1,11 @@
 import { editCategoryTitle } from "@/lib/api/category";
+import { categoriesState } from "@/lib/atom/categories";
 import { drizzleDb } from "@/lib/db/db";
 import { Category } from "@/lib/types/Category";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { Control, useForm } from "react-hook-form";
+import { useRecoilValue } from "recoil";
 import z from "zod";
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,10 +37,12 @@ export const useEditCategoryModal: UseEditCategoryModal = (args) => {
   };
 
   // React Hook Form
-  const { control, handleSubmit, reset, setValue, watch } = useForm<EditCategoryFormInput>({
-    defaultValues,
-    resolver: zodResolver(schema),
-  });
+  const { control, handleSubmit, reset, setValue, watch, setError } =
+    useForm<EditCategoryFormInput>({
+      defaultValues,
+      resolver: zodResolver(schema),
+    });
+  const categories = useRecoilValue(categoriesState);
 
   // FIXME:なぜかdefaultValue だと表示切り替わらないので useEffect を使っている
   useEffect(() => {
@@ -47,6 +51,14 @@ export const useEditCategoryModal: UseEditCategoryModal = (args) => {
 
   const handleClickEditButton = async (data: EditCategoryFormInput) => {
     try {
+      const isDuplicateTitle = categories
+        .filter((c) => c.isActive)
+        .map((c) => c.title)
+        .includes(data.categoryTitle);
+      if (isDuplicateTitle) {
+        setError("categoryTitle", { message: "カテゴリ名が重複しています" });
+        return;
+      }
       await editCategoryTitle(drizzleDb, selectedCategory.id, data.categoryTitle);
     } catch (e) {
       console.log(e);

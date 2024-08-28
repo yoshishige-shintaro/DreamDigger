@@ -5,7 +5,7 @@ import { RawCategory } from "@/lib/types/Category";
 import { createUuid } from "@/lib/utils/uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Control, useForm } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import z from "zod";
 
 // ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,19 +26,28 @@ type UseAddCategoryModal = (args: { closeModal: () => void }) => {
 // hooks 本体 ========================================================================================
 export const useAddCategoryModal: UseAddCategoryModal = (args) => {
   const { closeModal } = args;
-  const setCategories = useSetRecoilState(categoriesState);
+  const categories = useRecoilValue(categoriesState);
 
   const defaultValues: AddCategoryFormInput = {
     categoryTitle: "",
   };
 
   // React Hook Form
-  const { control, handleSubmit, reset } = useForm<AddCategoryFormInput>({
+  const { control, handleSubmit, reset, setError } = useForm<AddCategoryFormInput>({
     defaultValues,
     resolver: zodResolver(schema),
   });
 
   const handleClickEditButton = async (data: AddCategoryFormInput) => {
+    const isDuplicateTitle = categories
+      .filter((c) => c.isActive)
+      .map((c) => c.title)
+      .includes(data.categoryTitle);
+    if (isDuplicateTitle) {
+      setError("categoryTitle", { message: "カテゴリ名が重複しています" });
+      return;
+    }
+
     const body: RawCategory = {
       uuid: createUuid(),
       isActive: true,
