@@ -15,7 +15,7 @@ export default function StatusScreen() {
   const currentTitleData = selectCurrentTitleData(achievedCount);
 
   return (
-    <ScrollView className="flex-1 px-8" showsVerticalScrollIndicator={false}>
+    <ScrollView className="flex-1 px-8 max-w-[500] mx-auto" showsVerticalScrollIndicator={false}>
       {/* ステータスカード */}
       <Text
         className="text-3xl font-bold text-center mt-12 mb-4"
@@ -28,16 +28,16 @@ export default function StatusScreen() {
       >
         現在の称号
       </Text>
-      <View className="status-card-container items-center justify-center flex-row">
-        <View
-          style={{
-            shadowColor: "#000000",
-            shadowOpacity: 0.25,
-            shadowRadius: 8,
-            shadowOffset: { width: 0, height: 8 },
-          }}
-          className="flex-1 bg-white pt-16 pb-8 px-8 rounded-lg"
-        >
+      <View
+        style={{
+          shadowColor: "#000000",
+          shadowOpacity: 0.25,
+          shadowRadius: 8,
+          shadowOffset: { width: 0, height: 8 },
+        }}
+        className="status-card-container pt-16 pb-8 px-8  bg-white rounded-lg items-center justify-center flex-row"
+      >
+        <View className="w-full max-w-[400] ">
           <TitleIconCard titleName={currentTitleData.name} size={128} />
           <ProgressBar achievedCount={achievedCount} currentTitleData={currentTitleData} />
           {/* TODO:称号の説明を入れる */}
@@ -57,13 +57,12 @@ export default function StatusScreen() {
         獲得した称号
       </Text>
       <View
-        className="flex-row flex-wrap rounded-lg mb-12 bg-white"
+        className="flex-row flex-wrap rounded-lg mb-12 bg-white h-[50%]"
         style={{
           shadowColor: "#000000",
           shadowOpacity: 0.25,
           shadowRadius: 8,
           shadowOffset: { width: 0, height: 8 },
-          height: 630,
         }}
       >
         {TITLE_DATA_ITEMS.map((titleData, index) =>
