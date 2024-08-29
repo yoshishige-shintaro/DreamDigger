@@ -3,7 +3,7 @@
     "name": "やりたいこと発掘アプリ",
     "description": "自分のやりたいことを発掘することができるアプリ",
     "slug": "DreamDigger",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "orientation": "portrait",
     "icon": "./assets/images/app-icon.png",
     "scheme": "DreamDigger",
@@ -22,6 +22,10 @@
     },
     "notification": {
       "icon": "./assets/images/app-icon.png"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/ea69567c-2c1b-4f0e-92fb-4960040d6611"
     },
     "android": {
       "adaptiveIcon": {
@@ -47,6 +51,9 @@
       "eas": {
         "projectId": "ea69567c-2c1b-4f0e-92fb-4960040d6611"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     }
   }
 }
