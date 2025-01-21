@@ -5,7 +5,7 @@ import { View } from "@/components/common/Themed";
 import { BASE_COLOR } from "@/constants/Colors";
 import { ModalType, useCategoryScreen } from "@/hooks/category/useCategoryScree";
 import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
-import { Link, Stack } from "expo-router";
+import { Link, Stack, useNavigation } from "expo-router";
 
 import { Pressable, Text } from "react-native";
 
@@ -22,6 +22,8 @@ export default function CategoryScreen() {
     slideAnim,
   } = useCategoryScreen();
 
+  const navigation = useNavigation()
+
   // TODO：カテゴリの並べ替え
 
   return (
@@ -31,8 +33,7 @@ export default function CategoryScreen() {
         options={{
           headerTitle: "カテゴリ管理",
           headerLeft: () => (
-            <Link href="/(tabs)/" asChild>
-              <Pressable>
+              <Pressable onPress={()=>{navigation.goBack()}} >
                 {({ pressed }) => (
                   <View className="flex-row bg-sky-200" style={{ opacity: pressed ? 0.5 : 1 }}>
                     <AntDesign name="left" size={24} color="white" />
@@ -40,7 +41,6 @@ export default function CategoryScreen() {
                   </View>
                 )}
               </Pressable>
-            </Link>
           ),
           headerRight: () => (
             <Pressable onPress={handleClickAddButton}>

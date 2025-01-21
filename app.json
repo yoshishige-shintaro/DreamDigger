@@ -7,6 +7,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/app-icon.png",
     "scheme": "DreamDigger",
+    "newArchEnabled":false,
     "userInterfaceStyle": "automatic",
     "platforms": [
       "ios"
@@ -39,7 +40,8 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

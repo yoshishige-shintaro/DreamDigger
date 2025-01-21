@@ -1,7 +1,7 @@
 import AddBucketListItemModal from "@/components/bucketList/AddBucketListItemModal";
 import BucketList from "@/components/bucketList/BucketList";
 import EditBucketListItemModal from "@/components/bucketList/EditBucketListItemModal";
-import Walkthrough from "@/components/walkthrough/Walkthrough";
+import { View } from "@/components/common/Themed";
 import Colors from "@/constants/Colors";
 import { useDiggingScreen } from "@/hooks/bucketList/useDiggingScreen";
 import { CATEGORY_ALL_ITEM } from "@/lib/types/Category";
@@ -35,11 +35,6 @@ export default function DiggingScreen() {
           tabBarIndicatorStyle: { backgroundColor: Colors.light.tabBarIndicator, height: 3 },
           tabBarScrollEnabled: true,
         }}
-        // SCREEN の wrapper のスタイル
-        sceneContainerStyle={{
-          paddingHorizontal: 12,
-          alignItems: "center",
-        }}
       >
         {[CATEGORY_ALL_ITEM, ...categories].map((category, index) => (
           <Tab.Screen
@@ -52,13 +47,15 @@ export default function DiggingScreen() {
             }}
           >
             {() => (
-              <BucketList
-                bucketItems={
-                  index === 0
-                    ? bucketItems
-                    : bucketItems.filter((item) => item.categoryId === category.id)
-                }
-              />
+              <View className="px-3 bg-transparent">
+                <BucketList
+                  bucketItems={
+                    index === 0
+                      ? bucketItems
+                      : bucketItems.filter((item) => item.categoryId === category.id)
+                  }
+                />
+              </View>
             )}
           </Tab.Screen>
         ))}
