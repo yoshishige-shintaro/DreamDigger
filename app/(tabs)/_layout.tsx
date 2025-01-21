@@ -77,7 +77,6 @@ export default function TabLayout() {
   return (
     <>
       {isOpenWalkthrough && <Walkthrough setIsOpenWalkthrough={setIsOpenWalkthrough} />}
-      <NavigationContainer>
         <Tabs
           screenOptions={{
             // TODO: colors 撲滅
@@ -145,7 +144,6 @@ export default function TabLayout() {
             }}
           />
         </Tabs>
-      </NavigationContainer>
     </>
   );
 }
