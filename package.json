@@ -26,7 +26,7 @@
     "date-fns": "^3.6.0",
     "drizzle-orm": "^0.33.0",
     "drizzle-zod": "^0.5.1",
-    "expo": "~51.0.31",
+    "expo": "^52.0.27",
     "expo-font": "~12.0.9",
     "expo-linking": "~6.3.1",
     "expo-router": "~3.5.23",
@@ -34,6 +34,7 @@
     "expo-sqlite": "^14.0.6",
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "~3.0.7",
+    "expo-updates": "~0.25.24",
     "expo-web-browser": "~13.0.3",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
@@ -54,8 +55,7 @@
     "react-native-web": "~0.19.10",
     "recoil": "^0.7.7",
     "victory-native": "^37.0.3-next.0",
-    "zod": "^3.23.8",
-    "expo-updates": "~0.25.24"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
