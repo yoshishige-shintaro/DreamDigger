@@ -39,7 +39,8 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
@@ -52,6 +53,7 @@
         "projectId": "ea69567c-2c1b-4f0e-92fb-4960040d6611"
       }
     },
+    "newArchEnabled":false,
     "runtimeVersion": {
       "policy": "appVersion"
     }
