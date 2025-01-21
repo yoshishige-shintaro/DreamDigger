@@ -31,7 +31,7 @@ export default function CategoryScreen() {
         options={{
           headerTitle: "カテゴリ管理",
           headerLeft: () => (
-            <Link href="/(tabs)/" asChild>
+            <Link href="/(tabs)" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <View className="flex-row bg-sky-200" style={{ opacity: pressed ? 0.5 : 1 }}>
