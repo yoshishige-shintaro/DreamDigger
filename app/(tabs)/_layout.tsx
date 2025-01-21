@@ -8,6 +8,7 @@ import { BucketItem } from "@/lib/types/BucketItem";
 import { Category } from "@/lib/types/Category";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NavigationContainer } from "@react-navigation/native";
 import { asc } from "drizzle-orm";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { Link, Tabs } from "expo-router";
@@ -76,73 +77,75 @@ export default function TabLayout() {
   return (
     <>
       {isOpenWalkthrough && <Walkthrough setIsOpenWalkthrough={setIsOpenWalkthrough} />}
-      <Tabs
-        screenOptions={{
-          // TODO: colors 撲滅
-          tabBarActiveTintColor: Colors.light.tint,
-          headerStyle: {
-            backgroundColor: BASE_COLOR,
-          },
-          headerTitleStyle: {
-            color: "#fff",
-            fontSize: 18,
-            fontWeight: 900,
-          },
-          tabBarStyle: {
-            backgroundColor: Colors.light.background,
-          },
-        }}
-      >
-        <Tabs.Screen
-          name="index"
-          options={{
-            title: "発掘する",
-            tabBarIcon: ({ color }) => <TabBarIcon name="pickaxe" color={color} />,
-            headerRight: () => (
-              <Link href="/category" asChild>
-                <Pressable>
-                  {({ pressed }) => (
-                    <Text
-                      className="text-white font-bold"
-                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                    >
-                      カテゴリ管理
-                    </Text>
-                  )}
-                </Pressable>
-              </Link>
-            ),
-            headerLeft: () => (
-              <Link href="/usage" asChild>
-                <Pressable>
-                  {({ pressed }) => (
-                    <Text
-                      className="text-white font-bold"
-                      style={{ marginLeft: 15, opacity: pressed ? 0.5 : 1 }}
-                    >
-                      使い方
-                    </Text>
-                  )}
-                </Pressable>
-              </Link>
-            ),
+      <NavigationContainer>
+        <Tabs
+          screenOptions={{
+            // TODO: colors 撲滅
+            tabBarActiveTintColor: Colors.light.tint,
+            headerStyle: {
+              backgroundColor: BASE_COLOR,
+            },
+            headerTitleStyle: {
+              color: "#fff",
+              fontSize: 18,
+              fontWeight: 900,
+            },
+            tabBarStyle: {
+              backgroundColor: Colors.light.background,
+            },
           }}
-        />
-        <Tabs.Screen
-          name="status"
-          options={{
-            title: "ステータス",
-            tabBarIcon: ({ color }) => <TabBarIcon name="account" color={color} />,
-          }}
-        />
-        <Tabs.Screen
-          name="history"
-          options={{
-            title: "発掘履歴",
-            tabBarIcon: ({ color }) => <TabBarIcon name="history" color={color} />,
-          }}
-        />
-      </Tabs>
+        >
+          <Tabs.Screen
+            name="index"
+            options={{
+              title: "発掘する",
+              tabBarIcon: ({ color }) => <TabBarIcon name="pickaxe" color={color} />,
+              headerRight: () => (
+                <Link href="/category" asChild>
+                  <Pressable>
+                    {({ pressed }) => (
+                      <Text
+                        className="text-white font-bold"
+                        style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                      >
+                        カテゴリ管理
+                      </Text>
+                    )}
+                  </Pressable>
+                </Link>
+              ),
+              headerLeft: () => (
+                <Link href="/usage" asChild>
+                  <Pressable>
+                    {({ pressed }) => (
+                      <Text
+                        className="text-white font-bold"
+                        style={{ marginLeft: 15, opacity: pressed ? 0.5 : 1 }}
+                      >
+                        使い方
+                      </Text>
+                    )}
+                  </Pressable>
+                </Link>
+              ),
+            }}
+          />
+          <Tabs.Screen
+            name="status"
+            options={{
+              title: "ステータス",
+              tabBarIcon: ({ color }) => <TabBarIcon name="account" color={color} />,
+            }}
+          />
+          <Tabs.Screen
+            name="history"
+            options={{
+              title: "発掘履歴",
+              tabBarIcon: ({ color }) => <TabBarIcon name="history" color={color} />,
+            }}
+          />
+        </Tabs>
+      </NavigationContainer>
     </>
   );
 }

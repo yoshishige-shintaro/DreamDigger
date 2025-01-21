@@ -7,6 +7,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/app-icon.png",
     "scheme": "DreamDigger",
+    "newArchEnabled":false,
     "userInterfaceStyle": "automatic",
     "platforms": [
       "ios"
@@ -53,7 +54,6 @@
         "projectId": "ea69567c-2c1b-4f0e-92fb-4960040d6611"
       }
     },
-    "newArchEnabled":false,
     "runtimeVersion": {
       "policy": "appVersion"
     }
