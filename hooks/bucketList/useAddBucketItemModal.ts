@@ -23,6 +23,7 @@ const schema = z.object({
   deadline: z.date().refine((date) => date > new Date(), {
     message: "未来の日時を設定してください",
   }),
+  isRemind:z.boolean(),
 });
 
 // schema から型を抽出
@@ -45,6 +46,7 @@ type UseAddBucketItemModal = (args: { currentCategoryId: string }) => {
   closeModal: () => void;
   isOpenModal: boolean;
   slideAnim: Animated.Value;
+  isRemind:boolean;
 };
 
 // hooks 本体 ========================================================================================
@@ -55,10 +57,11 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
     bucketItemTitle: "",
     categoryId: currentCategoryId === CATEGORY_ALL_ITEM.id ? undefined : currentCategoryId,
     deadline: new Date(),
+    isRemind:false,
   };
 
   // React Hook Form
-  const { control, handleSubmit, reset, setValue } = useForm<AddBucketItemFormInput>({
+  const { control, handleSubmit, reset, setValue,getValues } = useForm<AddBucketItemFormInput>({
     defaultValues,
     resolver: zodResolver(schema),
   });
@@ -105,6 +108,8 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
     }).start();
   };
 
+  const isRemind = getValues('isRemind')
+
   return {
     control,
     onSubmit: handleSubmit(handleClickAddButton),
@@ -112,5 +117,6 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
     openModal,
     isOpenModal,
     slideAnim,
+    isRemind
   };
 };

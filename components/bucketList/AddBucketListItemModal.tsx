@@ -2,10 +2,11 @@ import AddBucketListItemButton from "@/components/bucketList/AddBucketListItemBu
 import RhfDatetimePicker from "@/components/common/RhfDatetimePicker";
 import RhfPickerSelect from "@/components/common/RhfPickerSelect";
 import RhfTextInput from "@/components/common/RhfTextInput";
+import RhfToggleSwitch from "@/components/common/RhfToggleSwitch";
 import { useAddBucketItemModal } from "@/hooks/bucketList/useAddBucketItemModal";
 import { Category } from "@/lib/types/Category";
 import React from "react";
-import { Animated, Button, Pressable, Text, View } from "react-native";
+import { Animated, Button, Pressable, Switch, Text, View } from "react-native";
 
 type AddBucketListItemModalProps = {
   categories: Category[];
@@ -14,7 +15,7 @@ type AddBucketListItemModalProps = {
 
 const AddBucketListItemModal = (props: AddBucketListItemModalProps) => {
   const { categories, currentCategoryId } = props;
-  const { control, onSubmit, closeModal, openModal, slideAnim, isOpenModal } =
+  const { control, onSubmit, closeModal, openModal, slideAnim, isOpenModal,isRemind } =
     useAddBucketItemModal({ currentCategoryId });
 
   return (
@@ -46,7 +47,14 @@ const AddBucketListItemModal = (props: AddBucketListItemModalProps) => {
                 }))}
               />
               <RhfDatetimePicker control={control} name="deadline" label="達成期限" />
+              <View className="gap-2 mt-6">
+                <View className="flex-row items-center justify-between">
+                  <Text className="text-sm">リマインド設定</Text>
+                  <RhfToggleSwitch control={control} name="isRemind" />
+                </View>
+              </View>
             </View>
+            
 
             <View className="mt-6 flex-row justify-center">
               <View className="flex-row justify-center items-center flex-1">
