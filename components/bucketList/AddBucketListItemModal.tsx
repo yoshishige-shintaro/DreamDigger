@@ -6,7 +6,7 @@ import RhfToggleSwitch from "@/components/common/RhfToggleSwitch";
 import { useAddBucketItemModal } from "@/hooks/bucketList/useAddBucketItemModal";
 import { Category } from "@/lib/types/Category";
 import React from "react";
-import { Animated, Button, Pressable, Switch, Text, View } from "react-native";
+import { Animated, Button, Pressable, Text, View } from "react-native";
 
 type AddBucketListItemModalProps = {
   categories: Category[];
@@ -15,7 +15,7 @@ type AddBucketListItemModalProps = {
 
 const AddBucketListItemModal = (props: AddBucketListItemModalProps) => {
   const { categories, currentCategoryId } = props;
-  const { control, onSubmit, closeModal, openModal, slideAnim, isOpenModal,isRemind } =
+  const { control, onSubmit, closeModal, openModal, slideAnim, isOpenModal, isRemind } =
     useAddBucketItemModal({ currentCategoryId });
 
   return (
@@ -32,29 +32,46 @@ const AddBucketListItemModal = (props: AddBucketListItemModalProps) => {
             className={`flex-1 mx-4  bg-gray-100 rounded-xl py-8 px-12`}
             style={[{ transform: [{ translateY: slideAnim }] }]}
           >
-            <View className="items-center justify-center mb-8">
+            <View className="items-center justify-center">
               <Text className="text-lg font-bold">やりたいこと追加</Text>
             </View>
             <View>
-              <RhfTextInput control={control} name="bucketItemTitle" label="やりたいこと" />
-              <RhfPickerSelect
-                control={control}
-                name="categoryId"
-                label="カテゴリ"
-                items={categories.map((category) => ({
-                  label: category.title,
-                  value: category.id,
-                }))}
-              />
-              <RhfDatetimePicker control={control} name="deadline" label="達成期限" />
-              <View className="gap-2 mt-6">
+              {/* やりたいこと */}
+              <View className="mt-6">
+                <RhfTextInput control={control} name="bucketItemTitle" label="やりたいこと" />
+              </View>
+
+              {/* カテゴリ */}
+              <View className="mt-4">
+                <RhfPickerSelect
+                  control={control}
+                  name="categoryId"
+                  label="カテゴリ"
+                  items={categories.map((category) => ({
+                    label: category.title,
+                    value: category.id,
+                  }))}
+                />
+              </View>
+
+              {/* 達成期限 */}
+              <View className="mt-4">
+                <RhfDatetimePicker control={control} name="deadline" label="達成期限" />
+              </View>
+
+              {/* リマインド設定 */}
+              <View className="mt-4">
+                {/* リマインドトグルボタン */}
                 <View className="flex-row items-center justify-between">
                   <Text className="text-sm">リマインド設定</Text>
                   <RhfToggleSwitch control={control} name="isRemind" />
                 </View>
+                {/* リマインド日時設定 */}
+                <View className="mt-2">
+                  <RhfDatetimePicker control={control} name="remindDate" />
+                </View>
               </View>
             </View>
-            
 
             <View className="mt-6 flex-row justify-center">
               <View className="flex-row justify-center items-center flex-1">

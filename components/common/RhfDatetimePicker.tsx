@@ -31,7 +31,7 @@ const RhfDatetimePicker = <T extends FieldValues>(props: InputProps<T>): JSX.Ele
   };
 
   return (
-    <View className="gap-2 mt-6">
+    <View className="gap-2">
       {label && <Text className="text-sm">{label}</Text>}
       <Pressable onPress={showDatePicker} onBlur={hideDatePicker}>
         <View
