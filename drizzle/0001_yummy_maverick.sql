@@ -1,0 +1,1 @@
+ALTER TABLE `bucket_items` ADD `notification_id` text;
