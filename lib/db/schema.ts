@@ -10,6 +10,8 @@ export const bucketItemsSchema = sqliteTable(TableValue.BUCKET_ITEMS_TABLE, {
   // TODO: なぜかStatusValue.ACHIEVED , StatusValue.DURING_CHALLENGE が読み込めない
   status: text("status", { enum: ["achieved", "during_challenge"] }).notNull(),
   categoryId: text("category_id"),
+  // プッシュ通知に紐づく Id、通知を削除するときに使用する
+  notificationId: text("notification_id"),
 });
 
 export const categorySchema = sqliteTable(TableValue.CATEGORY_TABLE, {

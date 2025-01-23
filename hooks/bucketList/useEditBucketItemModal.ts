@@ -2,6 +2,7 @@ import { achievedBucketItems, deleteBucketItems } from "@/lib/api/bucketListItem
 import { bucketListItemsState } from "@/lib/atom/bucketListItems";
 import { selectedBucketListItemState } from "@/lib/atom/selectedBucketListItem";
 import { drizzleDb } from "@/lib/db/db";
+import { cancelNotificationSchedule } from "@/lib/utils/notification";
 import { useEffect, useRef, useState } from "react";
 import { Animated, Dimensions } from "react-native";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -60,6 +61,7 @@ export const useEditBucketItemModal: UseEditBucketItemModal = () => {
   const [selectedBucketItems, setSelectedBucketItems] = useRecoilState(selectedBucketListItemState);
   const setBucketItems = useSetRecoilState(bucketListItemsState);
   const bucketItemIds = selectedBucketItems.map((s) => s.id);
+  const notificationIds = selectedBucketItems.map((s) => s.notificationId);
 
   // チェックボックスが外れてもモーダルからアイテムが消えないように、モーダルが開いたらselected...Items を更新しない
   const [selectedBucketItemsInModal, setSelectedBucketItemsInModal] = useState<
@@ -88,6 +90,15 @@ export const useEditBucketItemModal: UseEditBucketItemModal = () => {
       if (editType === EditTypeValues.ACHIEVE) {
         await achievedBucketItems(drizzleDb, bucketItemIds);
       }
+
+      // リマインドの削除
+      await Promise.all(
+        notificationIds.map(async (notificationId) => {
+          if (notificationId) {
+            await cancelNotificationSchedule(notificationId);
+          }
+        }),
+      );
     } catch (e) {
       console.log("ERROR!!!");
       console.log(e);

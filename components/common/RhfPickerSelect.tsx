@@ -18,7 +18,7 @@ const RhfPickerSelect = <T extends FieldValues>(props: InputProps<T>): JSX.Eleme
   } = useController({ control, name });
 
   return (
-    <View className="gap-2 mt-6">
+    <View className="gap-2">
       {label && <Text className="text-sm">{label}</Text>}
       <View>
         <RNPickerSelect

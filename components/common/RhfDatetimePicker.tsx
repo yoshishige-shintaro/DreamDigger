@@ -9,7 +9,7 @@ type InputProps<T extends FieldValues> = UseControllerProps<T> & {
 };
 
 const RhfDatetimePicker = <T extends FieldValues>(props: InputProps<T>): JSX.Element => {
-  const { name, control, label } = props;
+  const { name, control, label, disabled } = props;
 
   const {
     field: { value, onChange },
@@ -31,13 +31,13 @@ const RhfDatetimePicker = <T extends FieldValues>(props: InputProps<T>): JSX.Ele
   };
 
   return (
-    <View className="gap-2 mt-6">
+    <View className="gap-2">
       {label && <Text className="text-sm">{label}</Text>}
-      <Pressable onPress={showDatePicker} onBlur={hideDatePicker}>
+      <Pressable disabled={disabled} onPress={showDatePicker} onBlur={hideDatePicker}>
         <View
           className={`rounded border px-4 py-2 outline-none focus:border-cyan-300 ${
-            error ? "border-rose-700" : "border-gray-300"
-          }`}
+            disabled ? "opacity-40" : ""
+          } ${error ? "border-rose-700" : "border-gray-300"}`}
         >
           <Text>{formatDate(value)}</Text>
         </View>
