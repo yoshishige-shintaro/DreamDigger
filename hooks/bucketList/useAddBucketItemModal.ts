@@ -33,16 +33,6 @@ const schema = z.object({
 // schema から型を抽出
 export type AddBucketItemFormInput = z.infer<typeof schema>;
 
-const buildBody = (data: AddBucketItemFormInput): RawBucketItem => ({
-  uuid: createUuid(),
-  createdAt: new Date(),
-  deadline: data.deadline,
-  achievedAt: null,
-  categoryId: data.categoryId ?? null,
-  status: StatusValue.DURING_CHALLENGE,
-  title: data.bucketItemTitle,
-});
-
 type UseAddBucketItemModal = (args: { currentCategoryId: string }) => {
   control: Control<AddBucketItemFormInput>;
   onSubmit: () => Promise<void>;
@@ -80,6 +70,8 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
   const handleClickAddButton = async (data: AddBucketItemFormInput) => {
     try {
       const { bucketItemTitle, isRemind, deadline, remindDate } = data;
+      // 通知に紐づく id。初期値は null
+      let notificationId: RawBucketItem["notificationId"] = null;
       // リマインド設定がある場合
       if (isRemind) {
         // リマインド日時が達成期限よりも前に設定されているかをチェックする
@@ -93,13 +85,24 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
 
         // 通知権限がある時のみプッシュ通知をスケジュール
         if (isNotificationsPermitted) {
-          const NotificationId = await scheduleNotifications(bucketItemTitle, deadline, remindDate);
-          console.log("==================");
-          console.log(NotificationId);
+          notificationId = await scheduleNotifications(bucketItemTitle, deadline, remindDate);
         }
       }
 
-      await addBucketItem(drizzleDb, buildBody(data));
+      // やりたいこと追加 api にわたす body
+      const body: RawBucketItem = {
+        uuid: createUuid(),
+        createdAt: new Date(),
+        deadline: data.deadline,
+        achievedAt: null,
+        categoryId: data.categoryId ?? null,
+        status: StatusValue.DURING_CHALLENGE,
+        title: data.bucketItemTitle,
+        notificationId: notificationId,
+      };
+
+      // やりたいこと追加
+      await addBucketItem(drizzleDb, body);
     } catch (e) {
       console.log(e);
       throw e;

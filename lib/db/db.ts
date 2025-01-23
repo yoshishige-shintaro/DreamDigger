@@ -1,7 +1,7 @@
-import { AddBucketItemFormInput } from "@/hooks/bucketList/useAddBucketItemModal";
 import { addBucketItems } from "@/lib/api/bucketListItem";
 import { addCategory } from "@/lib/api/category";
 import { categorySchema } from "@/lib/db/schema";
+import { RawBucketItem, StatusValue } from "@/lib/types/BucketItem";
 import { createUuid } from "@/lib/utils/uuid";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import { SQLiteDatabase, openDatabaseSync } from "expo-sqlite";
@@ -39,21 +39,36 @@ export const createInitData = async (db: SQLiteDatabase): Promise<void> => {
     title: "チュートリアル",
   });
 
-  const tutorialBucketItems: AddBucketItemFormInput[] = [
+  const tutorialBucketItems: RawBucketItem[] = [
     {
-      bucketItemTitle: "「使い方」を見る",
+      title: "「使い方」を見る",
       deadline: createDeadline(15),
       categoryId: tutorialCategoryId,
+      uuid: createUuid(),
+      achievedAt: null,
+      status: StatusValue.DURING_CHALLENGE,
+      notificationId: null,
+      createdAt: new Date(),
     },
     {
-      bucketItemTitle: "やりたいことを追加する",
+      title: "やりたいことを追加する",
       deadline: createDeadline(15),
       categoryId: tutorialCategoryId,
+      uuid: createUuid(),
+      achievedAt: null,
+      status: StatusValue.DURING_CHALLENGE,
+      notificationId: null,
+      createdAt: new Date(),
     },
     {
-      bucketItemTitle: "追加したやりたいことを達成する",
+      title: "追加したやりたいことを達成する",
       deadline: createDeadline(30),
       categoryId: tutorialCategoryId,
+      uuid: createUuid(),
+      achievedAt: null,
+      status: StatusValue.DURING_CHALLENGE,
+      notificationId: null,
+      createdAt: new Date(),
     },
   ];
   await addBucketItems(drizzleDb, tutorialBucketItems);
