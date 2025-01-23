@@ -55,7 +55,8 @@
     "react-native-web": "~0.19.13",
     "recoil": "^0.7.7",
     "victory-native": "^37.0.3-next.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "expo-notifications": "~0.29.12"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

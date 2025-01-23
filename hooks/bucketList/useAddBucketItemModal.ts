@@ -2,6 +2,7 @@ import { addBucketItem } from "@/lib/api/bucketListItem";
 import { drizzleDb } from "@/lib/db/db";
 import { RawBucketItem, StatusValue } from "@/lib/types/BucketItem";
 import { CATEGORY_ALL_ITEM } from "@/lib/types/Category";
+import { checkNotificationPermissions, scheduleNotifications } from "@/lib/utils/notification";
 // import { SQLInsertBucketListItem } from "@/lib/utils/db";
 import { createUuid } from "@/lib/utils/uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,7 +24,10 @@ const schema = z.object({
   deadline: z.date().refine((date) => date > new Date(), {
     message: "未来の日時を設定してください",
   }),
-  isRemind:z.boolean(),
+  isRemind: z.boolean(),
+  remindDate: z.date().refine((date) => date > new Date(), {
+    message: "未来の日時を設定してください",
+  }),
 });
 
 // schema から型を抽出
@@ -46,7 +50,7 @@ type UseAddBucketItemModal = (args: { currentCategoryId: string }) => {
   closeModal: () => void;
   isOpenModal: boolean;
   slideAnim: Animated.Value;
-  isRemind:boolean;
+  isRemind: boolean;
 };
 
 // hooks 本体 ========================================================================================
@@ -57,14 +61,16 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
     bucketItemTitle: "",
     categoryId: currentCategoryId === CATEGORY_ALL_ITEM.id ? undefined : currentCategoryId,
     deadline: new Date(),
-    isRemind:false,
+    isRemind: false,
+    remindDate: new Date(),
   };
 
   // React Hook Form
-  const { control, handleSubmit, reset, setValue,getValues } = useForm<AddBucketItemFormInput>({
-    defaultValues,
-    resolver: zodResolver(schema),
-  });
+  const { control, handleSubmit, setValue, watch, setError, reset } =
+    useForm<AddBucketItemFormInput>({
+      defaultValues,
+      resolver: zodResolver(schema),
+    });
 
   // FIXME:なぜかdefaultValue だと表示切り替わらないので useEffect を使っている
   useEffect(() => {
@@ -73,6 +79,26 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
 
   const handleClickAddButton = async (data: AddBucketItemFormInput) => {
     try {
+      const { bucketItemTitle, isRemind, deadline, remindDate } = data;
+      // リマインド設定がある場合
+      if (isRemind) {
+        // リマインド日時が達成期限よりも前に設定されているかをチェックする
+        if (deadline <= remindDate) {
+          setError("remindDate", { message: "達成期限よりも前の日時を設定してください" });
+          return;
+        }
+
+        // 通知権限があるかチェック
+        const isNotificationsPermitted = await checkNotificationPermissions();
+
+        // 通知権限がある時のみプッシュ通知をスケジュール
+        if (isNotificationsPermitted) {
+          const NotificationId = await scheduleNotifications(bucketItemTitle, deadline, remindDate);
+          console.log("==================");
+          console.log(NotificationId);
+        }
+      }
+
       await addBucketItem(drizzleDb, buildBody(data));
     } catch (e) {
       console.log(e);
@@ -96,9 +122,13 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
       setIsOpenModal(false);
       setValue("bucketItemTitle", "");
     });
+    reset();
   };
   const openModal = () => {
-    setValue("deadline", new Date());
+    // 締切は現在から10分後にする
+    setValue("deadline", new Date(new Date().getTime() + 10 * 60 * 1000));
+    // リマインドは現在から５分後にする
+    setValue("remindDate", new Date(new Date().getTime() + 5 * 60 * 1000));
     setIsOpenModal(true);
     // モーダルを表示するアニメーション
     Animated.timing(slideAnim, {
@@ -108,7 +138,7 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
     }).start();
   };
 
-  const isRemind = getValues('isRemind')
+  const isRemind = watch("isRemind");
 
   return {
     control,
@@ -117,6 +147,6 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
     openModal,
     isOpenModal,
     slideAnim,
-    isRemind
+    isRemind,
   };
 };

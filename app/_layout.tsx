@@ -9,11 +9,22 @@ import { useEffect } from "react";
 import migrations from "../drizzle/migrations";
 
 import { BASE_COLOR } from "@/constants/Colors";
+import { setNotificationHandler } from "expo-notifications";
 import { Button, LogBox, Pressable, Text, View } from "react-native";
 import "react-native-reanimated";
 import { RecoilRoot } from "recoil";
 
 LogBox.ignoreLogs(["Require cycle: node_modules/victory"]);
+
+// ユーザーへの表示設定
+// この設定によってユーザーに通知が表示されるようになる
+setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true, // 通知の表示設定
+    shouldPlaySound: false, // 通知のサウンド設定
+    shouldSetBadge: false, // 通知のバッジ設定
+  }),
+});
 
 // スプラッシュ画面が自動で閉じるのを止める
 SplashScreen.preventAutoHideAsync();

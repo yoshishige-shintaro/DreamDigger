@@ -24,14 +24,6 @@ export function formatDate(date: Date): string {
   return `${month}${day}日 ${dayOfWeek} ${hours}:${minutes}`;
 }
 
-export function convertToLocalDatetime(date: Date) {
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1; // 月は0から始まるので+1
-  const day = date.getDate();
-  const minutes = date.getMinutes();
-
-  return new Date(year, month - 1, day, 0, minutes);
-}
 
 // 過去30日間の日付を取得
 export const getLast30Days = () => {

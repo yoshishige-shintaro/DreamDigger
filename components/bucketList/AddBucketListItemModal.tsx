@@ -67,8 +67,9 @@ const AddBucketListItemModal = (props: AddBucketListItemModalProps) => {
                   <RhfToggleSwitch control={control} name="isRemind" />
                 </View>
                 {/* リマインド日時設定 */}
-                <View className="mt-2">
-                  <RhfDatetimePicker control={control} name="remindDate" />
+
+                <View className="mt-3">
+                  <RhfDatetimePicker control={control} disabled={!isRemind} name="remindDate" />
                 </View>
               </View>
             </View>
