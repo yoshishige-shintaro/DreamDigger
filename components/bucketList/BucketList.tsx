@@ -9,9 +9,12 @@ type BucketListProps = {
 
 const BucketList = (props: BucketListProps): JSX.Element => {
   const { bucketItems } = props;
+  console.log("bucketItems===============");
+
+  console.log(bucketItems);
 
   return bucketItems.length === 0 ? (
-    <View className="flex-1 justify-center items-center gap-4">
+    <View className="items-center mt-[70%]">
       <FontAwesome6 name="person-digging" size={72} color="gray" />
       <Text className="text-base text-gray-500">やりたいことが登録されていません</Text>
     </View>
