@@ -9,7 +9,12 @@ export type ElapsedTimeObj = {
   seconds: number;
 };
 
-type UseBucketListItem = (args: { id: string; title: string; deadline: Date }) => {
+type UseBucketListItem = (args: {
+  id: string;
+  title: string;
+  deadline: Date;
+  notificationId: string | null;
+}) => {
   timeToDeadline: ElapsedTimeObj;
   isExpiredDeadline: boolean;
   isChecked: boolean;
@@ -17,7 +22,7 @@ type UseBucketListItem = (args: { id: string; title: string; deadline: Date }) =
 };
 
 export const useBucketListItem: UseBucketListItem = (args) => {
-  const { id, title, deadline } = args;
+  const { id, title, deadline, notificationId } = args;
 
   // 締め切りまでの残り時間を計算する
   const calculateTimeLeft = (): ElapsedTimeObj => {
@@ -73,7 +78,9 @@ export const useBucketListItem: UseBucketListItem = (args) => {
   const isChecked = selectedBucketListItem.map((item) => item.id).includes(id);
   const onClickCheckBox = (): void => {
     setSelectedBucketListItem((prev) =>
-      isChecked ? prev.filter((item) => item.id !== id) : [...prev, { id, title, deadline }],
+      isChecked
+        ? prev.filter((item) => item.id !== id)
+        : [...prev, { id, title, deadline, notificationId }],
     );
   };
 

@@ -33,3 +33,8 @@ export const scheduleNotifications = async (
   });
   return notificationId;
 };
+
+// 通知を削除
+export const cancelNotificationSchedule = (notificationId: string): void => {
+  void Notifications.cancelScheduledNotificationAsync(notificationId);
+};
