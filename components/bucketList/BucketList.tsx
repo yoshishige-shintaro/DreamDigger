@@ -9,9 +9,6 @@ type BucketListProps = {
 
 const BucketList = (props: BucketListProps): JSX.Element => {
   const { bucketItems } = props;
-  console.log("bucketItems===============");
-
-  console.log(bucketItems);
 
   return bucketItems.length === 0 ? (
     <View className="items-center mt-[70%]">
@@ -31,6 +28,7 @@ const BucketList = (props: BucketListProps): JSX.Element => {
               id={bucketItem.id}
               title={bucketItem.title}
               deadline={bucketItem.deadline}
+              notificationId={bucketItem.notificationId}
             />
           );
         }}

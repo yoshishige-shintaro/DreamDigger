@@ -1,4 +1,4 @@
-import { formatDate } from "@/lib/utils/date";
+import { calculateTimeLeft, displayTimeToDeadLine } from "@/lib/utils/date";
 import * as Notifications from "expo-notifications";
 
 // 通知の許可情報を取得する関数
@@ -24,7 +24,10 @@ export const scheduleNotifications = async (
   const notificationId = await Notifications.scheduleNotificationAsync({
     content: {
       title: "発掘リマインド",
-      body: `「${bucketItemTitle}」の達成期限は${formatDate(deadline)}です。`,
+      subtitle: bucketItemTitle,
+      body: `達成期限まで：${displayTimeToDeadLine(calculateTimeLeft(deadline))}`,
+      // TODO:通知サウンドがならない
+      sound: "default",
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DATE,
@@ -35,6 +38,6 @@ export const scheduleNotifications = async (
 };
 
 // 通知を削除
-export const cancelNotificationSchedule = (notificationId: string): void => {
-  void Notifications.cancelScheduledNotificationAsync(notificationId);
+export const cancelNotificationSchedule = async (notificationId: string): Promise<void> => {
+  await Notifications.cancelScheduledNotificationAsync(notificationId);
 };

@@ -1,5 +1,6 @@
 import { TINT_COLOR } from "@/constants/Colors";
-import { ElapsedTimeObj, useBucketListItem } from "@/hooks/bucketList/useBucketListItem";
+import { useBucketListItem } from "@/hooks/bucketList/useBucketListItem";
+import { displayTimeToDeadLine } from "@/lib/utils/date";
 import { Pressable, Text, View } from "react-native";
 import CheckBox from "react-native-check-box";
 
@@ -7,6 +8,7 @@ type BucketListItemProps = {
   id: string;
   title: string;
   deadline: Date;
+  notificationId: string | null;
   // きしょいけど
   isEdit?: boolean;
 };
@@ -53,16 +55,3 @@ const BucketListItem = (props: BucketListItemProps): JSX.Element => {
 };
 
 export default BucketListItem;
-
-const displayTimeToDeadLine = (timeToDeadline: ElapsedTimeObj): string => {
-  const { days, hours, minutes, seconds } = timeToDeadline;
-
-  if (days > 0) {
-    return `${days}日`;
-  } else if (hours > 0) {
-    return `${hours}時間`;
-  } else if (minutes > 0) {
-    return `${minutes}分`;
-  }
-  return `${seconds}秒`;
-};

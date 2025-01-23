@@ -24,7 +24,6 @@ export function formatDate(date: Date): string {
   return `${month}${day}日 ${dayOfWeek} ${hours}:${minutes}`;
 }
 
-
 // 過去30日間の日付を取得
 export const getLast30Days = () => {
   const dates = [];
@@ -45,4 +44,52 @@ export const areDatesEqual = (date1: Date, date2: Date) => {
   const d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
 
   return d1.getTime() === d2.getTime();
+};
+
+export type ElapsedTimeObj = {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+};
+
+// 締め切りまでの残り時間を計算する
+export const calculateTimeLeft = (deadline:Date): ElapsedTimeObj => {
+  const difference = +new Date(deadline) - +new Date();
+  // 初期値は 0 （期限切れの状態）
+  let timeLeft: {
+    days: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
+  } = {
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  };
+
+  if (difference > 0) {
+    timeLeft = {
+      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((difference / 1000 / 60) % 60),
+      seconds: Math.floor((difference / 1000) % 60),
+    };
+  }
+  return timeLeft;
+};
+
+// 達成期限までの残り時間を表示 DD日 or HH時間 or MM分 or SS秒 形式で表示
+export const displayTimeToDeadLine = (timeToDeadline: ElapsedTimeObj): string => {
+  const { days, hours, minutes, seconds } = timeToDeadline;
+
+  if (days > 0) {
+    return `${days}日`;
+  } else if (hours > 0) {
+    return `${hours}時間`;
+  } else if (minutes > 0) {
+    return `${minutes}分`;
+  }
+  return `${seconds}秒`;
 };

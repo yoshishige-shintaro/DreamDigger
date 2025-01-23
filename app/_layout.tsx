@@ -21,7 +21,7 @@ LogBox.ignoreLogs(["Require cycle: node_modules/victory"]);
 setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true, // 通知の表示設定
-    shouldPlaySound: false, // 通知のサウンド設定
+    shouldPlaySound: true, // 通知のサウンド設定
     shouldSetBadge: false, // 通知のバッジ設定
   }),
 });

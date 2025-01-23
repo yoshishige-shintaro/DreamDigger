@@ -81,13 +81,6 @@ export const useEditBucketItemModal: UseEditBucketItemModal = () => {
 
   const handleClickEditButton = async () => {
     try {
-      // リマインドの削除
-      notificationIds.forEach((notificationId) => {
-        if (notificationId) {
-          cancelNotificationSchedule(notificationId);
-        }
-      });
-
       // 削除
       if (editType === EditTypeValues.DELETE) {
         await deleteBucketItems(drizzleDb, bucketItemIds);
@@ -97,6 +90,15 @@ export const useEditBucketItemModal: UseEditBucketItemModal = () => {
       if (editType === EditTypeValues.ACHIEVE) {
         await achievedBucketItems(drizzleDb, bucketItemIds);
       }
+
+      // リマインドの削除
+      await Promise.all(
+        notificationIds.map(async (notificationId) => {
+          if (notificationId) {
+            await cancelNotificationSchedule(notificationId);
+          }
+        }),
+      );
     } catch (e) {
       console.log("ERROR!!!");
       console.log(e);
