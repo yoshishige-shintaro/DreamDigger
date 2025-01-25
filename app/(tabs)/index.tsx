@@ -2,8 +2,8 @@ import AddBucketListItemModal from "@/components/bucketList/AddBucketListItemMod
 import BucketList from "@/components/bucketList/BucketList";
 import EditBucketListItemModal from "@/components/bucketList/EditBucketListItemModal";
 import { View } from "@/components/common/Themed";
-import Colors from "@/constants/Colors";
 import { useDiggingScreen } from "@/hooks/bucketList/useDiggingScreen";
+import { useTheme } from "@/hooks/common/useTheme";
 import { CATEGORY_ALL_ITEM } from "@/lib/types/Category";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useState } from "react";
@@ -16,13 +16,15 @@ export default function DiggingScreen() {
   // やりたいこと追加モーダルの「カテゴリ」デフォルト値を更新するためのステート
   const [currentCategoryId, setCurrentCategoryId] = useState(CATEGORY_ALL_ITEM.id);
 
+  const { theme } = useTheme();
+
   return (
     <>
       <Tab.Navigator
         screenOptions={{
           tabBarStyle: {
-            backgroundColor: Colors.light.background,
-            shadowColor: "#000000",
+            backgroundColor: theme.bg.secondary,
+            shadowColor: theme.shadowColor,
             shadowOpacity: 0.1,
             shadowRadius: 4,
             shadowOffset: { width: 0, height: 4 },
@@ -31,9 +33,12 @@ export default function DiggingScreen() {
           tabBarLabelStyle: {
             fontSize: 14,
           },
-          tabBarActiveTintColor: Colors.light.text,
-          tabBarIndicatorStyle: { backgroundColor: Colors.light.tabBarIndicator, height: 3 },
+          tabBarActiveTintColor: theme.text.primary,
+          tabBarIndicatorStyle: { backgroundColor: theme.accent.primary, height: 3 },
           tabBarScrollEnabled: true,
+          sceneStyle: {
+            backgroundColor: theme.bg.primary,
+          },
         }}
       >
         {[CATEGORY_ALL_ITEM, ...categories].map((category, index) => (

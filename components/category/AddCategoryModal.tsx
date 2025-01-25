@@ -1,5 +1,6 @@
 import RhfTextInput from "@/components/common/RhfTextInput";
 import { useAddCategoryModal } from "@/hooks/category/useAddCategoryModal";
+import { useTheme } from "@/hooks/common/useTheme";
 import { Animated, Button, Pressable, Text, View } from "react-native";
 
 type AddCategoryModalProps = {
@@ -10,6 +11,7 @@ type AddCategoryModalProps = {
 const AddCategoryModal = (props: AddCategoryModalProps): JSX.Element => {
   const { closeModal, slideAnim } = props;
   const { control, onSubmit } = useAddCategoryModal({ closeModal });
+  const { theme } = useTheme();
 
   return (
     <View className="absolute w-screen h-full flex-row justify-center items-center ">
@@ -20,10 +22,12 @@ const AddCategoryModal = (props: AddCategoryModalProps): JSX.Element => {
       />
       <Animated.View
         className={`flex-1 mx-4  bg-gray-100 rounded-xl py-8 px-12`}
-        style={[{ transform: [{ translateY: slideAnim }] }]}
+        style={[{ transform: [{ translateY: slideAnim }], backgroundColor: theme.bg.secondary }]}
       >
         <View className="items-center justify-center mb-8">
-          <Text className="text-lg font-bold">カテゴリ追加</Text>
+          <Text className="text-lg font-bold" style={{ color: theme.text.primary }}>
+            カテゴリ追加
+          </Text>
         </View>
 
         <RhfTextInput control={control} name="categoryTitle" label="カテゴリ名" />

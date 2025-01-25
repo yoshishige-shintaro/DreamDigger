@@ -1,3 +1,4 @@
+import { useTheme } from "@/hooks/common/useTheme";
 import { TITLE_DATA_ITEMS, TitleDataItem, TitleName } from "@/lib/data/title";
 import { useFocusEffect } from "expo-router";
 import { useCallback, useRef } from "react";
@@ -46,10 +47,17 @@ const ProgressBar = (props: ProgressBarProps) => {
     }, [widthAnim, rateOfProgress]),
   );
 
+  const { theme } = useTheme();
+
   return (
     <View className="mt-4 items-center">
-      <Text className="text-lg font-medium">次の称号まであと {leftNumber} こ</Text>
-      <View className="w-full bg-gray-300 h-8 rounded-full relative">
+      <Text className="text-lg font-medium" style={{ color: theme.text.primary }}>
+        次の称号まであと {leftNumber} こ
+      </Text>
+      <View
+        className="w-full h-8 rounded-full relative"
+        style={{ backgroundColor: theme.bg.primary }}
+      >
         <Animated.View
           style={[
             {
@@ -58,8 +66,11 @@ const ProgressBar = (props: ProgressBarProps) => {
                 outputRange: ["0%", "100%"],
               }),
             },
+            {
+              backgroundColor: theme.accent.primary,
+            },
           ]}
-          className="absolute left-0 top-0 h-full bg-sky-300 rounded-full animate-fill"
+          className="absolute left-0 top-0 h-full  rounded-full animate-fill"
         />
       </View>
     </View>
