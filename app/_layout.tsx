@@ -8,7 +8,8 @@ import { SQLiteProvider } from "expo-sqlite";
 import { useEffect } from "react";
 import migrations from "../drizzle/migrations";
 
-import { BASE_COLOR } from "@/constants/Colors";
+import ThemeProvider from "@/components/common/ThemePovider";
+import { useTheme } from "@/hooks/common/useTheme";
 import { setNotificationHandler } from "expo-notifications";
 import { Button, LogBox, Pressable, Text, View } from "react-native";
 import "react-native-reanimated";
@@ -37,7 +38,11 @@ export default function RootLayout() {
     throw error;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <ThemeProvider>
+      <RootLayoutNav />
+    </ThemeProvider>
+  );
 }
 
 function RootLayoutNav() {
@@ -55,14 +60,16 @@ function RootLayoutNav() {
     return null;
   }
 
+  const { theme } = useTheme();
+
   return (
     <SQLiteProvider databaseName={DB_NAME} onInit={createInitData}>
       <RecoilRoot>
         <Stack
           screenOptions={{
-            headerStyle: { backgroundColor: BASE_COLOR },
+            headerStyle: { backgroundColor: theme.accent.primary },
             headerTitleStyle: {
-              color: "#fff",
+              color: theme.text.header,
             },
           }}
         >
@@ -86,6 +93,7 @@ function RootLayoutNav() {
 // 閉じるボタン
 const CloseButton = (): JSX.Element => {
   const navigation = useNavigation();
+  const { theme } = useTheme();
 
   return (
     <Pressable
@@ -94,8 +102,10 @@ const CloseButton = (): JSX.Element => {
       }}
     >
       {({ pressed }) => (
-        <View className="flex-row bg-sky-200" style={{ opacity: pressed ? 0.5 : 1 }}>
-          <Text className="text-white font-bold text-base ">閉じる</Text>
+        <View className="flex-row" style={{ opacity: pressed ? 0.5 : 1 }}>
+          <Text className={`font-bold text-base`} style={{ color: theme.text.header }}>
+            閉じる
+          </Text>
         </View>
       )}
     </Pressable>

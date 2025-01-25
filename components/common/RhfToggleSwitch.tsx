@@ -1,4 +1,4 @@
-import { TINT_COLOR } from "@/constants/Colors";
+import { useTheme } from "@/hooks/common/useTheme";
 import { checkNotificationPermissions } from "@/lib/utils/notification";
 import * as Linking from "expo-linking";
 import { FieldValues, UseControllerProps, useController } from "react-hook-form";
@@ -30,13 +30,15 @@ const RhfToggleSwitch = <T extends FieldValues>(props: RhfToggleSwitchProps<T>):
     }
   };
 
+  const { theme } = useTheme();
+
   return (
     <Switch
       value={value}
       onValueChange={async (value) => {
         await onChangeToggle(value);
       }}
-      trackColor={{ true: TINT_COLOR, false: "#f4f3f4" }}
+      trackColor={{ true: theme.accent.primary, false: "#f4f3f4" }}
     />
   );
 };

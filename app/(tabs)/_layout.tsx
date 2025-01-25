@@ -1,5 +1,5 @@
 import Walkthrough from "@/components/walkthrough/Walkthrough";
-import Colors, { BASE_COLOR } from "@/constants/Colors";
+import { useTheme } from "@/hooks/common/useTheme";
 import { bucketListItemsState } from "@/lib/atom/bucketListItems";
 import { categoriesState } from "@/lib/atom/categories";
 import { drizzleDb } from "@/lib/db/db";
@@ -8,7 +8,6 @@ import { BucketItem } from "@/lib/types/BucketItem";
 import { Category } from "@/lib/types/Category";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { NavigationContainer } from "@react-navigation/native";
 import { asc } from "drizzle-orm";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { Link, Tabs } from "expo-router";
@@ -47,6 +46,7 @@ export default function TabLayout() {
     setCategories(categoriesRes.map((item) => new Category(item)));
   }, [categoriesRes]);
 
+  // ウォークスルーページを表示させるための処理
   useEffect(() => {
     const checkFirstVisit = async () => {
       try {
@@ -74,76 +74,90 @@ export default function TabLayout() {
     return null;
   }
 
+  const { theme } = useTheme();
+
   return (
     <>
       {isOpenWalkthrough && <Walkthrough setIsOpenWalkthrough={setIsOpenWalkthrough} />}
-        <Tabs
-          screenOptions={{
-            // TODO: colors 撲滅
-            tabBarActiveTintColor: Colors.light.tint,
-            headerStyle: {
-              backgroundColor: BASE_COLOR,
-            },
-            headerTitleStyle: {
-              color: "#fff",
-              fontSize: 18,
-              fontWeight: 900,
-            },
-            tabBarStyle: {
-              backgroundColor: Colors.light.background,
-            },
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: theme.accent.primary,
+          headerStyle: {
+            backgroundColor: theme.accent.primary,
+          },
+          headerTitleStyle: {
+            color: theme.text.header,
+            fontSize: 18,
+            fontWeight: 900,
+          },
+          tabBarStyle: {
+            backgroundColor: theme.bg.secondary,
+            borderColor: theme.bg.secondary,
+            shadowColor: theme.shadowColor,
+            shadowOpacity: 0.1,
+            shadowRadius: 4,
+            shadowOffset: { width: 0, height: -4 },
+          },
+        }}
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: "発掘する",
+            tabBarIcon: ({ color }) => <TabBarIcon name="pickaxe" color={color} />,
+            headerRight: () => (
+              <Link href="/category" asChild>
+                <Pressable>
+                  {({ pressed }) => (
+                    <Text
+                      className={`font-bold`}
+                      style={{
+                        marginRight: 15,
+                        opacity: pressed ? 0.5 : 1,
+                        color: theme.text.header,
+                      }}
+                    >
+                      カテゴリ管理
+                    </Text>
+                  )}
+                </Pressable>
+              </Link>
+            ),
+            headerLeft: () => (
+              <Link href="/usage" asChild>
+                <Pressable>
+                  {({ pressed }) => (
+                    <Text
+                      className={`font-bold`}
+                      style={{
+                        marginLeft: 15,
+                        opacity: pressed ? 0.5 : 1,
+                        color: theme.text.header,
+                      }}
+                    >
+                      使い方
+                    </Text>
+                  )}
+                </Pressable>
+              </Link>
+            ),
           }}
-        >
-          <Tabs.Screen
-            name="index"
-            options={{
-              title: "発掘する",
-              tabBarIcon: ({ color }) => <TabBarIcon name="pickaxe" color={color} />,
-              headerRight: () => (
-                <Link href="/category" asChild>
-                  <Pressable>
-                    {({ pressed }) => (
-                      <Text
-                        className="text-white font-bold"
-                        style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                      >
-                        カテゴリ管理
-                      </Text>
-                    )}
-                  </Pressable>
-                </Link>
-              ),
-              headerLeft: () => (
-                <Link href="/usage" asChild>
-                  <Pressable>
-                    {({ pressed }) => (
-                      <Text
-                        className="text-white font-bold"
-                        style={{ marginLeft: 15, opacity: pressed ? 0.5 : 1 }}
-                      >
-                        使い方
-                      </Text>
-                    )}
-                  </Pressable>
-                </Link>
-              ),
-            }}
-          />
-          <Tabs.Screen
-            name="status"
-            options={{
-              title: "ステータス",
-              tabBarIcon: ({ color }) => <TabBarIcon name="account" color={color} />,
-            }}
-          />
-          <Tabs.Screen
-            name="history"
-            options={{
-              title: "発掘履歴",
-              tabBarIcon: ({ color }) => <TabBarIcon name="history" color={color} />,
-            }}
-          />
-        </Tabs>
+        />
+        <Tabs.Screen
+          name="status"
+          options={{
+            title: "ステータス",
+            tabBarIcon: ({ color }) => <TabBarIcon name="account" color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="history"
+          options={{
+            title: "発掘履歴",
+            tabBarIcon: ({ color }) => <TabBarIcon name="history" color={color} />,
+          }}
+        />
+      </Tabs>
     </>
   );
 }

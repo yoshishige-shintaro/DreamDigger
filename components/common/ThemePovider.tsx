@@ -13,7 +13,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element }) => {
     setIsDarkMode(!isDarkMode);
   };
 
-  // テーマパレット
+  //
   const theme = isDarkMode ? DARK_THEME_PALETTE : LIGHT_THEME_PALETTE;
 
   return (

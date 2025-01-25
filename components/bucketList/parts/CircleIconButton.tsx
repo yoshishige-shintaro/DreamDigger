@@ -1,6 +1,7 @@
+import { useTheme } from "@/hooks/common/useTheme";
 import { Feather } from "@expo/vector-icons";
-import { Style } from "nativewind/dist/style-sheet/runtime";
-import { Animated, TouchableHighlight } from "react-native";
+
+import { Animated, TouchableHighlight, ViewStyle } from "react-native";
 
 export const IconOptions = {
   CHECK: "check",
@@ -13,10 +14,11 @@ export type IconOptions = (typeof IconOptions)[keyof typeof IconOptions];
 type CircleIconButtonProps = {
   icon: IconOptions;
   onPress: () => void;
-  animationStyle: Style;
+  animationStyle: ViewStyle;
 };
 const CircleIconButton = (props: CircleIconButtonProps) => {
   const { icon, onPress, animationStyle } = props;
+  const { theme } = useTheme();
   return (
     <Animated.View
       style={animationStyle}
@@ -24,18 +26,17 @@ const CircleIconButton = (props: CircleIconButtonProps) => {
     >
       <TouchableHighlight
         style={{
-          shadowColor: "#000000",
-          shadowOpacity: 0.25,
+          shadowColor: theme.shadowColor,
+          shadowOpacity: 0.1,
           shadowRadius: 8,
           shadowOffset: { width: 0, height: 8 },
+          backgroundColor: icon === IconOptions.TRASH ? "#ef4444" : theme.accent.primary,
         }}
-        className={`w-16 h-16 bg-sky-200 rounded-full justify-center items-center ${
-          icon === IconOptions.TRASH ? "bg-red-500" : ""
-        }`}
+        className={`w-16 h-16 rounded-full justify-center items-center`}
         onPress={onPress}
         underlayColor={icon === IconOptions.TRASH ? "#fecaca" : "#e0f2fe"}
       >
-        <Feather name={icon} size={48} color="#fff" />
+        <Feather name={icon} size={48} color={"#fff"} />
       </TouchableHighlight>
     </Animated.View>
   );

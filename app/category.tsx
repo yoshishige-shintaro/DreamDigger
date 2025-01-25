@@ -2,10 +2,10 @@ import AddCategoryModal from "@/components/category/AddCategoryModal";
 import DeleteCategoryModal from "@/components/category/DeleteCategoryModal";
 import EditCategoryModal from "@/components/category/EditCategoryModal";
 import { View } from "@/components/common/Themed";
-import { BASE_COLOR } from "@/constants/Colors";
 import { ModalType, useCategoryScreen } from "@/hooks/category/useCategoryScree";
+import { useTheme } from "@/hooks/common/useTheme";
 import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
-import { Link, Stack, useNavigation } from "expo-router";
+import { Stack, useNavigation } from "expo-router";
 
 import { Pressable, Text } from "react-native";
 
@@ -22,30 +22,38 @@ export default function CategoryScreen() {
     slideAnim,
   } = useCategoryScreen();
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+
+  const { theme } = useTheme();
 
   // TODO：カテゴリの並べ替え
-
   return (
     <>
       {/* ヘッダーの設定 */}
       <Stack.Screen
         options={{
           headerTitle: "カテゴリ管理",
+          contentStyle: {
+            backgroundColor: theme.bg.primary,
+          },
           headerLeft: () => (
-              <Pressable onPress={()=>{navigation.goBack()}} >
-                {({ pressed }) => (
-                  <View className="flex-row bg-sky-200" style={{ opacity: pressed ? 0.5 : 1 }}>
-                    <AntDesign name="left" size={24} color="white" />
-                    <Text className="text-white font-bold text-base ">戻る</Text>
-                  </View>
-                )}
-              </Pressable>
+            <Pressable
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
+              {({ pressed }) => (
+                <View className="flex-row bg-transparent" style={{ opacity: pressed ? 0.5 : 1 }}>
+                  <AntDesign name="left" size={24} color="white" />
+                  <Text className="text-white font-bold text-base ">戻る</Text>
+                </View>
+              )}
+            </Pressable>
           ),
           headerRight: () => (
             <Pressable onPress={handleClickAddButton}>
               {({ pressed }) => (
-                <View style={{ opacity: pressed ? 0.5 : 1, backgroundColor: BASE_COLOR }}>
+                <View className="bg-transparent" style={{ opacity: pressed ? 0.5 : 1 }}>
                   <Feather name="plus" size={24} color="white" />
                 </View>
               )}
@@ -54,22 +62,23 @@ export default function CategoryScreen() {
         }}
       />
       {categories.length === 0 ? (
-        <View className="flex-1 justify-center items-center gap-4">
+        <View className="flex-1 bg-transparent justify-center items-center gap-4">
           <MaterialCommunityIcons name="yoga" size={72} color="gray" />
           <Text className="text-base text-gray-500">カテゴリが登録されていません</Text>
         </View>
       ) : (
-        <View className="flex-1 bg-gray-100 px-4 py-8 ">
+        <View className="flex-1 bg-transparent px-4 py-8 ">
           {categories.map((category) => (
             <View
               key={category.id}
               style={{
-                shadowColor: "#000000",
+                shadowColor: theme.shadowColor,
                 shadowOpacity: 0.1,
                 shadowRadius: 4,
                 shadowOffset: { width: 0, height: 4 },
+                backgroundColor: theme.bg.secondary,
               }}
-              className="flex-row justify-between items-center bg-white h-auto p-4 rounded-md mb-1"
+              className="flex-row justify-between items-center h-auto p-4 rounded-md mb-1"
             >
               <Pressable
                 onPress={() => {
@@ -77,9 +86,13 @@ export default function CategoryScreen() {
                 }}
               >
                 {({ pressed }) => (
-                  <View className={`flex-row gap-2 items-center ${pressed ? "opacity-50" : ""}`}>
-                    <Feather name="edit-2" size={24} color="black" />
-                    <Text className="text-base  w-[80%]">
+                  <View
+                    className={`flex-row bg-transparent gap-2 items-center ${
+                      pressed ? "opacity-50" : ""
+                    }`}
+                  >
+                    <Feather name="edit-2" size={24} color={theme.text.primary} />
+                    <Text className="text-base  w-[80%]" style={{ color: theme.text.primary }}>
                       {category.title}
                     </Text>
                   </View>
@@ -92,7 +105,7 @@ export default function CategoryScreen() {
                 }}
               >
                 {({ pressed }) => (
-                  <View className={`${pressed ? "opacity-50" : ""}`}>
+                  <View className={`bg-transparent ${pressed ? "opacity-50" : ""}`}>
                     <Feather name="trash-2" size={24} color="red" />
                   </View>
                 )}

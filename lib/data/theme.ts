@@ -6,6 +6,7 @@ export const LIGHT_THEME_PALETTE = {
     secondary: "#FFFFFF",
   },
   text: {
+    header: "#FFFFFF",
     primary: "#000000",
     secondary: "#cccccc",
   },
@@ -13,21 +14,24 @@ export const LIGHT_THEME_PALETTE = {
     // ヘッダー等の色
     primary: "#bae6fd",
   },
+  shadowColor: "#000000",
 };
 
 // ダークテーマ
 export const DARK_THEME_PALETTE = {
   bg: {
-    primary: "#000000",
-    secondary: "#1C1C1E",
+    primary: "#1C1C1E",
+    secondary: "#000000",
   },
   text: {
-    primary: "#FFFFFF",
+    header: "#FFFFFF",
+    primary: "#CCCCCC",
     secondary: "#8E8E93",
   },
   accent: {
     primary: "#0071b3",
   },
+  shadowColor: "#FFFFFF",
 };
 
 // テーマの型

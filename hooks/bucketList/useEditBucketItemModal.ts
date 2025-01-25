@@ -1,11 +1,10 @@
 import { achievedBucketItems, deleteBucketItems } from "@/lib/api/bucketListItem";
-import { bucketListItemsState } from "@/lib/atom/bucketListItems";
 import { selectedBucketListItemState } from "@/lib/atom/selectedBucketListItem";
 import { drizzleDb } from "@/lib/db/db";
 import { cancelNotificationSchedule } from "@/lib/utils/notification";
 import { useEffect, useRef, useState } from "react";
 import { Animated, Dimensions } from "react-native";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 export const EditTypeValues = {
   DELETE: "delete",
@@ -23,6 +22,7 @@ type UseEditBucketItemModal = () => {
     id: string;
     title: string;
     deadline: Date;
+    notificationId: string | null;
   }[];
   slideAnim: Animated.Value;
   isDisabledDeleteButton: boolean;
@@ -59,7 +59,6 @@ export const useEditBucketItemModal: UseEditBucketItemModal = () => {
   };
 
   const [selectedBucketItems, setSelectedBucketItems] = useRecoilState(selectedBucketListItemState);
-  const setBucketItems = useSetRecoilState(bucketListItemsState);
   const bucketItemIds = selectedBucketItems.map((s) => s.id);
   const notificationIds = selectedBucketItems.map((s) => s.notificationId);
 
@@ -69,6 +68,7 @@ export const useEditBucketItemModal: UseEditBucketItemModal = () => {
       id: string;
       title: string;
       deadline: Date;
+      notificationId: string | null;
     }[]
   >([]);
   useEffect(() => {
