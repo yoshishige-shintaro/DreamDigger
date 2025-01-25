@@ -51,6 +51,8 @@ function RootLayoutNav() {
     ...FontAwesome.font,
   });
 
+  const { theme } = useTheme();
+
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
@@ -59,8 +61,6 @@ function RootLayoutNav() {
   if (!loaded) {
     return null;
   }
-
-  const { theme } = useTheme();
 
   return (
     <SQLiteProvider databaseName={DB_NAME} onInit={createInitData}>

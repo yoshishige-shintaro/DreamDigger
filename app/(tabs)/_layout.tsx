@@ -23,10 +23,11 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
   color: string;
 }) {
-  return <MaterialCommunityIcons size={28} style={{ marginBottom: -3 }} {...props} />;
+  return <MaterialCommunityIcons size={36} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export default function TabLayout() {
+  const { theme } = useTheme();
   // TODO:フックにロジックを切り出す
   const setBucketItems = useSetRecoilState(bucketListItemsState);
 
@@ -74,8 +75,6 @@ export default function TabLayout() {
     return null;
   }
 
-  const { theme } = useTheme();
-
   return (
     <>
       {isOpenWalkthrough && <Walkthrough setIsOpenWalkthrough={setIsOpenWalkthrough} />}
@@ -84,11 +83,16 @@ export default function TabLayout() {
           tabBarActiveTintColor: theme.accent.primary,
           headerStyle: {
             backgroundColor: theme.accent.primary,
+            height: 90,
           },
           headerTitleStyle: {
             color: theme.text.header,
             fontSize: 18,
             fontWeight: 900,
+          },
+          tabBarIconStyle: {
+            width: "auto",
+            height: "80%",
           },
           tabBarStyle: {
             backgroundColor: theme.bg.secondary,
@@ -97,6 +101,7 @@ export default function TabLayout() {
             shadowOpacity: 0.1,
             shadowRadius: 4,
             shadowOffset: { width: 0, height: -4 },
+            height: "12%",
           },
         }}
       >
@@ -155,6 +160,13 @@ export default function TabLayout() {
           options={{
             title: "発掘履歴",
             tabBarIcon: ({ color }) => <TabBarIcon name="history" color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="settings"
+          options={{
+            title: "設定",
+            tabBarIcon: ({ color }) => <TabBarIcon name="cog-outline" color={color} />,
           }}
         />
       </Tabs>
