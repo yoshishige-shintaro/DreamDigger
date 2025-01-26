@@ -56,8 +56,7 @@
     "react-native-web": "~0.19.13",
     "recoil": "^0.7.7",
     "victory-native": "^37.0.3-next.0",
-    "zod": "^3.23.8",
-    "expo-store-review": "~8.0.1"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
