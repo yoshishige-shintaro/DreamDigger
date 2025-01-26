@@ -15,6 +15,15 @@ export const checkNotificationPermissions = async (): Promise<boolean> => {
   return isNotificationPermitted;
 };
 
+// 通知権限をリクエスト
+export const requestNotificationPermissions = async (): Promise<void> => {
+  const isNotificationPermitted = await checkNotificationPermissions();
+
+  if (!isNotificationPermitted) {
+    await Notifications.requestPermissionsAsync();
+  }
+};
+
 // 通知をすケージューリングする
 export const scheduleNotifications = async (
   bucketItemTitle: string,
