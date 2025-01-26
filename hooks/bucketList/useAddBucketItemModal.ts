@@ -2,7 +2,11 @@ import { addBucketItem } from "@/lib/api/bucketListItem";
 import { drizzleDb } from "@/lib/db/db";
 import { RawBucketItem, StatusValue } from "@/lib/types/BucketItem";
 import { CATEGORY_ALL_ITEM } from "@/lib/types/Category";
-import { checkNotificationPermissions, scheduleNotifications } from "@/lib/utils/notification";
+import {
+  checkNotificationPermissions,
+  requestNotificationPermissions,
+  scheduleNotifications,
+} from "@/lib/utils/notification";
 // import { SQLInsertBucketListItem } from "@/lib/utils/db";
 import { createUuid } from "@/lib/utils/uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,7 +40,7 @@ export type AddBucketItemFormInput = z.infer<typeof schema>;
 type UseAddBucketItemModal = (args: { currentCategoryId: string }) => {
   control: Control<AddBucketItemFormInput>;
   onSubmit: () => Promise<void>;
-  openModal: () => void;
+  openModal: () => Promise<void>;
   closeModal: () => void;
   isOpenModal: boolean;
   slideAnim: Animated.Value;
@@ -127,7 +131,7 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
     });
     reset();
   };
-  const openModal = () => {
+  const openModal = async () => {
     // 締切は現在から10分後にする
     setValue("deadline", new Date(new Date().getTime() + 10 * 60 * 1000));
     // リマインドは現在から５分後にする
@@ -139,6 +143,9 @@ export const useAddBucketItemModal: UseAddBucketItemModal = (args) => {
       duration: 300,
       useNativeDriver: true,
     }).start();
+
+    // 通知権限をリクエストしないと設定画面に通知項目が出てこないのでリクエストしている
+    await requestNotificationPermissions();
   };
 
   const isRemind = watch("isRemind");
