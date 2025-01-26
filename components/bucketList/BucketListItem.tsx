@@ -55,9 +55,10 @@ const BucketListItem = (props: BucketListItemProps): JSX.Element => {
       {/* 期限までの残り時間 */}
       {!isEdit && (
         <Text
-          className={`text-base ${
-            isExpiredDeadline ? "text-rose-500" : `text-[${theme.text.primary}]`
-          }`}
+          className={`text-base`}
+          style={{
+            color: isExpiredDeadline ? "#f43f5e" : theme.text.primary,
+          }}
         >
           {displayTimeToDeadLine(timeToDeadline)}
         </Text>
