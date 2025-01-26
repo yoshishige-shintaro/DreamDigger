@@ -1,5 +1,6 @@
 import AchievedBucketItemsCard from "@/components/history/AchievdBucketItemsCard";
 import BarChartCard from "@/components/history/BartChartCard";
+import { useTheme } from "@/hooks/common/useTheme";
 import { drizzleDb } from "@/lib/db/db";
 import { bucketItemsSchema } from "@/lib/db/schema";
 import { StatusValue } from "@/lib/types/BucketItem";
@@ -15,9 +16,14 @@ export default function TabTwoScreen() {
       .where(eq(bucketItemsSchema.status, StatusValue.ACHIEVED))
       .orderBy(desc(bucketItemsSchema.achievedAt)),
   );
+  const { theme } = useTheme();
 
   return (
-    <ScrollView className="px-4" showsVerticalScrollIndicator={false}>
+    <ScrollView
+      className="px-4"
+      style={{ backgroundColor: theme.bg.primary }}
+      showsVerticalScrollIndicator={false}
+    >
       <BarChartCard achievedBucketItems={achievedBucketItems} />
       <AchievedBucketItemsCard achievedBucketItems={achievedBucketItems} />
     </ScrollView>

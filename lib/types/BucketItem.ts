@@ -21,6 +21,7 @@ export class BucketItem {
   achievedAt: Date | null;
   status: StatusValue;
   categoryId: string | null;
+  notificationId: string | null;
   constructor(data: RawBucketItem) {
     this.id = data.uuid;
     this.title = data.title;
@@ -29,5 +30,6 @@ export class BucketItem {
     this.achievedAt = data.achievedAt ? new Date(data.achievedAt) : null;
     this.status = data.status;
     this.categoryId = data.categoryId;
+    this.notificationId = data.notificationId;
   }
 }

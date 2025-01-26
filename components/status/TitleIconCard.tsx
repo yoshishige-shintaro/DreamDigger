@@ -1,4 +1,5 @@
 import TitleIcon from "@/components/status/icon/TitleIcon";
+import { useTheme } from "@/hooks/common/useTheme";
 import { TitleName } from "@/lib/data/title";
 import { Text, View } from "react-native";
 
@@ -11,6 +12,8 @@ type TitleIconCardProps = {
 
 const TitleIconCard = (props: TitleIconCardProps): JSX.Element => {
   const { titleName, isSquare = false, question = false, size } = props;
+
+  const { theme } = useTheme();
 
   return (
     <View
@@ -25,7 +28,9 @@ const TitleIconCard = (props: TitleIconCardProps): JSX.Element => {
     >
       <View className="items-center">
         <TitleIcon titleName={titleName} size={size} />
-        <Text className="text-3xl font-extrabold mt-2 ">{question ? "？？？？" : titleName}</Text>
+        <Text className="text-3xl font-extrabold mt-2" style={{ color: theme.text.primary }}>
+          {question ? "？？？？" : titleName}
+        </Text>
       </View>
     </View>
   );

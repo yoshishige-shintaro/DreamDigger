@@ -2,18 +2,30 @@ import { DB_NAME, createInitData, drizzleDb } from "@/lib/db/db";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useFonts } from "expo-font";
-import { ErrorBoundaryProps, Link, Stack } from "expo-router";
+import { ErrorBoundaryProps, Stack, useNavigation } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { SQLiteProvider } from "expo-sqlite";
 import { useEffect } from "react";
 import migrations from "../drizzle/migrations";
 
-import { BASE_COLOR } from "@/constants/Colors";
+import ThemeProvider from "@/components/common/ThemePovider";
+import { useTheme } from "@/hooks/common/useTheme";
+import { setNotificationHandler } from "expo-notifications";
 import { Button, LogBox, Pressable, Text, View } from "react-native";
 import "react-native-reanimated";
 import { RecoilRoot } from "recoil";
 
 LogBox.ignoreLogs(["Require cycle: node_modules/victory"]);
+
+// ユーザーへの表示設定
+// この設定によってユーザーに通知が表示されるようになる
+setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true, // 通知の表示設定
+    shouldPlaySound: true, // 通知のサウンド設定
+    shouldSetBadge: false, // 通知のバッジ設定
+  }),
+});
 
 // スプラッシュ画面が自動で閉じるのを止める
 SplashScreen.preventAutoHideAsync();
@@ -26,7 +38,11 @@ export default function RootLayout() {
     throw error;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <ThemeProvider>
+      <RootLayoutNav />
+    </ThemeProvider>
+  );
 }
 
 function RootLayoutNav() {
@@ -34,6 +50,8 @@ function RootLayoutNav() {
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     ...FontAwesome.font,
   });
+
+  const { theme } = useTheme();
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -49,9 +67,9 @@ function RootLayoutNav() {
       <RecoilRoot>
         <Stack
           screenOptions={{
-            headerStyle: { backgroundColor: BASE_COLOR },
+            headerStyle: { backgroundColor: theme.accent.primary },
             headerTitleStyle: {
-              color: "#fff",
+              color: theme.text.header,
             },
           }}
         >
@@ -63,17 +81,7 @@ function RootLayoutNav() {
               gestureDirection: "vertical",
               headerTitle: "使い方",
               headerLeft: () => <View />,
-              headerRight: () => (
-                <Link href="/(tabs)/" asChild>
-                  <Pressable>
-                    {({ pressed }) => (
-                      <View className="flex-row bg-sky-200" style={{ opacity: pressed ? 0.5 : 1 }}>
-                        <Text className="text-white font-bold text-base ">閉じる</Text>
-                      </View>
-                    )}
-                  </Pressable>
-                </Link>
-              ),
+              headerRight: () => <CloseButton />,
             }}
           />
         </Stack>
@@ -81,6 +89,28 @@ function RootLayoutNav() {
     </SQLiteProvider>
   );
 }
+
+// 閉じるボタン
+const CloseButton = (): JSX.Element => {
+  const navigation = useNavigation();
+  const { theme } = useTheme();
+
+  return (
+    <Pressable
+      onPress={() => {
+        navigation.goBack();
+      }}
+    >
+      {({ pressed }) => (
+        <View className="flex-row" style={{ opacity: pressed ? 0.5 : 1 }}>
+          <Text className={`font-bold text-base`} style={{ color: theme.text.header }}>
+            閉じる
+          </Text>
+        </View>
+      )}
+    </Pressable>
+  );
+};
 
 export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
   return (

@@ -1,5 +1,6 @@
 import RhfTextInput from "@/components/common/RhfTextInput";
 import { useEditCategoryModal } from "@/hooks/category/useEditCategoryModal";
+import { useTheme } from "@/hooks/common/useTheme";
 import { Category } from "@/lib/types/Category";
 import { Animated, Button, Pressable, Text, View } from "react-native";
 
@@ -12,6 +13,7 @@ type CategoryEditModalProps = {
 const EditCategoryModal = (props: CategoryEditModalProps): JSX.Element => {
   const { closeModal, slideAnim } = props;
   const { control, onSubmit, isDisabledEditButton } = useEditCategoryModal(props);
+  const { theme } = useTheme();
 
   return (
     <View className="absolute w-screen h-full flex-row justify-center items-center ">
@@ -21,11 +23,13 @@ const EditCategoryModal = (props: CategoryEditModalProps): JSX.Element => {
         className="absolute top-0 left-0 w-screen h-full bg-black opacity-20"
       />
       <Animated.View
-        className={`flex-1 mx-4  bg-gray-100 rounded-xl py-8 px-12`}
-        style={[{ transform: [{ translateY: slideAnim }] }]}
+        className={`flex-1 mx-4 rounded-xl py-8 px-12`}
+        style={[{ transform: [{ translateY: slideAnim }], backgroundColor: theme.bg.secondary }]}
       >
         <View className="items-center justify-center mb-8">
-          <Text className="text-lg font-bold">カテゴリ編集</Text>
+          <Text className="text-lg font-bold" style={{ color: theme.text.primary }}>
+            カテゴリ編集
+          </Text>
         </View>
 
         <RhfTextInput control={control} name="categoryTitle" />

@@ -1,9 +1,11 @@
+import { useTheme } from "@/hooks/common/useTheme";
 import React from "react";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
 
 const UsageScreen = () => {
+  const { theme } = useTheme();
   return (
-    <SafeAreaView className="flex-1 bg-gray-100">
+    <SafeAreaView className="flex-1" style={{ backgroundColor: theme.bg.primary }}>
       <ScrollView className="p-4">
         {[
           {
@@ -39,13 +41,17 @@ const UsageScreen = () => {
             ],
           },
         ].map((section, index) => (
-          <View key={index} className="mb-6 bg-white rounded-lg shadow-md ">
-            <View className={`bg-sky-200 p-4`}>
+          <View
+            key={index}
+            className="mb-6 rounded-lg shadow-md "
+            style={{ backgroundColor: theme.bg.secondary }}
+          >
+            <View className={`p-4 rounded-lg`} style={{ backgroundColor: theme.accent.primary }}>
               <Text className="text-xl font-bold text-white">{section.title}</Text>
             </View>
             <View className="p-4">
               {section.content.map((item, i) => (
-                <Text key={i} className="text-gray-700 text-base mb-2">
+                <Text key={i} className="text-base mb-2" style={{ color: theme.text.primary }}>
                   • {item}
                 </Text>
               ))}

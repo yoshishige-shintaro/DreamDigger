@@ -2,6 +2,7 @@ import AchieveBucketListItemButton from "@/components/bucketList/AchieveBucketLi
 import BucketListItem from "@/components/bucketList/BucketListItem";
 import DeleteBucketListItemButton from "@/components/bucketList/DeleteBucketListItemButton";
 import { EditTypeValues, useEditBucketItemModal } from "@/hooks/bucketList/useEditBucketItemModal";
+import { useTheme } from "@/hooks/common/useTheme";
 import React from "react";
 import { Animated, Button, FlatList, Pressable, Text, View } from "react-native";
 
@@ -17,6 +18,8 @@ const EditBucketListItemModal = () => {
     editType,
   } = useEditBucketItemModal();
 
+  const { theme } = useTheme();
+
   return (
     <>
       <DeleteBucketListItemButton openModal={() => openModal(EditTypeValues.DELETE)} />
@@ -30,18 +33,25 @@ const EditBucketListItemModal = () => {
           />
           <Animated.View
             className={`flex-1 mx-4  bg-gray-100 rounded-xl py-8 px-4`}
-            style={[{ transform: [{ translateY: slideAnim }] }]}
+            style={[
+              { transform: [{ translateY: slideAnim }], backgroundColor: theme.bg.secondary },
+            ]}
           >
             <View className="items-center justify-center mb-8">
               {editType === EditTypeValues.DELETE ? (
-                <Text className="text-lg font-bold">やりたいこと削除</Text>
+                <Text className="text-lg font-bold" style={{ color: theme.text.primary }}>
+                  やりたいこと削除
+                </Text>
               ) : (
-                <Text className="text-lg font-bold">やりたいこと達成</Text>
+                <Text className="text-lg font-bold" style={{ color: theme.text.primary }}>
+                  やりたいこと達成
+                </Text>
               )}
             </View>
             <View className="max-h-[70%]">
               <FlatList
                 data={selectedBucketItemsInModal}
+                style={{ backgroundColor: theme.bg.primary, padding: 8 }}
                 renderItem={({ item }) => {
                   return (
                     <BucketListItem
@@ -49,6 +59,7 @@ const EditBucketListItemModal = () => {
                       id={item.id}
                       title={item.title}
                       deadline={item.deadline}
+                      notificationId={item.notificationId}
                       isEdit
                     />
                   );
